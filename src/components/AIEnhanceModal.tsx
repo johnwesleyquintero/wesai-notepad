@@ -41,6 +41,11 @@ const toneOptions: ToneOption[] = [
     label: "Persuasive",
     description: "Compelling, convincing, and action-oriented",
   },
+  {
+    id: "custom",
+    label: "Custom",
+    description: "Define your own tone",
+  },
 ];
 
 export const AIEnhanceModal = ({
@@ -50,6 +55,7 @@ export const AIEnhanceModal = ({
   onApplyChanges,
 }: AIEnhanceModalProps) => {
   const [selectedTone, setSelectedTone] = useState<string>("professional");
+  const [customToneInput, setCustomToneInput] = useState<string>("");
   const [enhancedText, setEnhancedText] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,15 +66,18 @@ export const AIEnhanceModal = ({
       setEnhancedText("");
       setError(null);
       setIsEnhanced(false);
+      setCustomToneInput(""); // Clear custom tone input on modal open
     }
   }, [isOpen]);
+
+  const currentTone = selectedTone === "custom" ? customToneInput : selectedTone;
 
   const handleEnhance = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const result = await geminiApi.enhanceText(content, selectedTone);
+      const result = await geminiApi.enhanceText(content, currentTone);
 
       if (result.success && result.content) {
         setEnhancedText(result.content);
@@ -83,6 +92,7 @@ export const AIEnhanceModal = ({
       setIsLoading(false);
     }
   };
+
 
   const handleApply = () => {
     onApplyChanges(enhancedText);
@@ -137,6 +147,24 @@ export const AIEnhanceModal = ({
                 </button>
               ))}
             </div>
+            {selectedTone === "custom" && (
+              <div className="mt-4">
+                <label
+                  htmlFor="custom-tone-input"
+                  className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
+                >
+                  Custom Tone Description
+                </label>
+                <input
+                  id="custom-tone-input"
+                  type="text"
+                  value={customToneInput}
+                  onChange={(e) => setCustomToneInput(e.target.value)}
+                  placeholder="e.g., 'witty and sarcastic', 'formal and direct'"
+                  className="w-full p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col md:flex-row gap-4">
