@@ -52,7 +52,7 @@ export const geminiApi = {
               temperature: 0.7,
               topK: 40,
               topP: 0.95,
-              maxOutputTokens: 1024,
+              maxOutputTokens: 4096,
             },
           }),
         },
@@ -76,7 +76,7 @@ export const geminiApi = {
       if (!enhancedText) {
         return {
           success: false,
-          error: "No enhanced text was generated. Please try again.",
+          error: `No enhanced text was generated. API response: ${JSON.stringify(data)}`,
         };
       }
 
