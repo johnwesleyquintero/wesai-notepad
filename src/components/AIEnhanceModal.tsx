@@ -1,0 +1,217 @@
+import { useState, useEffect } from "react";
+import { Sparkles, X, Check, AlertCircle, Loader2 } from "lucide-react";
+import { geminiApi } from "../utils/geminiApi";
+
+interface AIEnhanceModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  content: string;
+  onApplyChanges: (enhancedText: string) => void;
+}
+
+type ToneOption = {
+  id: string;
+  label: string;
+  description: string;
+};
+
+const toneOptions: ToneOption[] = [
+  {
+    id: "professional",
+    label: "Professional",
+    description: "Clear, concise, and business-appropriate",
+  },
+  {
+    id: "casual",
+    label: "Casual",
+    description: "Relaxed, conversational, and friendly",
+  },
+  {
+    id: "academic",
+    label: "Academic",
+    description: "Formal, precise, and well-structured",
+  },
+  {
+    id: "creative",
+    label: "Creative",
+    description: "Expressive, vivid, and engaging",
+  },
+  {
+    id: "persuasive",
+    label: "Persuasive",
+    description: "Compelling, convincing, and action-oriented",
+  },
+];
+
+export const AIEnhanceModal = ({
+  isOpen,
+  onClose,
+  content,
+  onApplyChanges,
+}: AIEnhanceModalProps) => {
+  const [selectedTone, setSelectedTone] = useState<string>("professional");
+  const [enhancedText, setEnhancedText] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isEnhanced, setIsEnhanced] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setEnhancedText("");
+      setError(null);
+      setIsEnhanced(false);
+    }
+  }, [isOpen]);
+
+  const handleEnhance = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await geminiApi.enhanceText(content, selectedTone);
+
+      if (result.success && result.content) {
+        setEnhancedText(result.content);
+        setIsEnhanced(true);
+      } else {
+        setError(result.error || "Failed to enhance text");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleApply = () => {
+    onApplyChanges(enhancedText);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 max-w-3xl w-full mx-4 shadow-2xl">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-full">
+              <Sparkles
+                size={24}
+                className="text-zinc-700 dark:text-zinc-300"
+              />
+            </div>
+            <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+              Enhance with AI
+            </h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-stone-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-zinc-500 dark:text-zinc-400"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+              Select Tone
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+              {toneOptions.map((tone) => (
+                <button
+                  key={tone.id}
+                  onClick={() => setSelectedTone(tone.id)}
+                  className={`p-3 rounded-lg text-left transition-colors ${
+                    selectedTone === tone.id
+                      ? "bg-zinc-900 dark:bg-zinc-700 text-white"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  }`}
+                >
+                  <div className="font-medium">{tone.label}</div>
+                  <div className="text-xs mt-1 opacity-80">
+                    {tone.description}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                Original Text
+              </div>
+              <div className="p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg h-60 overflow-y-auto text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">
+                {content || "No content to enhance"}
+              </div>
+            </div>
+
+            <div className="flex-1">
+              <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                Enhanced Text
+              </div>
+              <div className="p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg h-60 overflow-y-auto text-sm relative">
+                {isLoading ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Loader2
+                      size={24}
+                      className="animate-spin text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                ) : error ? (
+                  <div className="text-red-500 flex items-start gap-2">
+                    <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
+                    <span>{error}</span>
+                  </div>
+                ) : enhancedText ? (
+                  <div className="text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">
+                    {enhancedText}
+                  </div>
+                ) : (
+                  <div className="text-zinc-400 dark:text-zinc-500">
+                    Click "Enhance" to generate AI-improved text
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-4 flex gap-3 justify-end border-t border-stone-200 dark:border-zinc-700">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 text-zinc-700 dark:text-zinc-300 hover:bg-stone-100 dark:hover:bg-zinc-800 rounded-lg transition-colors font-medium"
+            >
+              Cancel
+            </button>
+
+            {!isEnhanced ? (
+              <button
+                onClick={handleEnhance}
+                disabled={isLoading || !content}
+                className={`px-4 py-2 rounded-lg transition-colors font-medium flex items-center gap-2 ${
+                  isLoading || !content
+                    ? "bg-zinc-300 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400 cursor-not-allowed"
+                    : "bg-zinc-900 dark:bg-zinc-700 text-white hover:bg-zinc-800 dark:hover:bg-zinc-600"
+                }`}
+              >
+                <Sparkles size={18} />
+                {isLoading ? "Enhancing..." : "Enhance"}
+              </button>
+            ) : (
+              <button
+                onClick={handleApply}
+                className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-lg transition-colors font-medium flex items-center gap-2"
+              >
+                <Check size={18} />
+                Apply Changes
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

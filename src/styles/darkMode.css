@@ -1,0 +1,54 @@
+/* Dark mode styles */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #18181b;
+  color: #e4e4e7;
+}
+
+.dark .note-card {
+  background-color: #27272a;
+  border-color: #3f3f46;
+}
+
+.dark .note-card:hover {
+  background-color: #3f3f46;
+}
+
+.dark .note-card.selected {
+  background-color: #3f3f46;
+  border-color: #71717a;
+}
+
+.dark .sidebar {
+  background-color: #27272a;
+  border-color: #3f3f46;
+}
+
+.dark .note-editor {
+  background-color: #27272a;
+  border-color: #3f3f46;
+}
+
+.dark input,
+.dark textarea {
+  background-color: #27272a;
+  color: #e4e4e7;
+  border-color: #3f3f46;
+}
+
+.dark input:focus,
+.dark textarea:focus {
+  border-color: #71717a;
+}
+
+.dark button.primary {
+  background-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+.dark button.primary:hover {
+  background-color: #52525b;
+}

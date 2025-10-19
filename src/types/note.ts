@@ -5,6 +5,7 @@ export interface Note {
   createdAt: number;
   updatedAt: number;
   isFavorite: boolean;
+  categories?: string[];
 }
 
-export type NoteFilter = 'all' | 'recent' | 'favorites';
+export type NoteFilter = "all" | "recent" | "favorites";

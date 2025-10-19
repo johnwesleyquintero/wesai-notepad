@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Note } from '../types/note';
-import { storageUtils } from '../utils/storage';
+import { useState, useEffect } from "react";
+import { Note } from "../types/note";
+import { storageUtils } from "../utils/storage";
 
 export const useLocalNotes = () => {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -17,7 +17,8 @@ export const useLocalNotes = () => {
       content,
       createdAt: Date.now(),
       updatedAt: Date.now(),
-      isFavorite: false
+      isFavorite: false,
+      categories: [],
     };
 
     const updatedNotes = [newNote, ...notes];
@@ -26,24 +27,25 @@ export const useLocalNotes = () => {
     return newNote;
   };
 
-  const updateNote = (id: string, updates: Partial<Omit<Note, 'id' | 'createdAt'>>): void => {
-    const updatedNotes = notes.map(note =>
-      note.id === id
-        ? { ...note, ...updates, updatedAt: Date.now() }
-        : note
+  const updateNote = (
+    id: string,
+    updates: Partial<Omit<Note, "id" | "createdAt">>,
+  ): void => {
+    const updatedNotes = notes.map((note) =>
+      note.id === id ? { ...note, ...updates, updatedAt: Date.now() } : note,
     );
     setNotes(updatedNotes);
     storageUtils.saveNotes(updatedNotes);
   };
 
   const deleteNote = (id: string): void => {
-    const updatedNotes = notes.filter(note => note.id !== id);
+    const updatedNotes = notes.filter((note) => note.id !== id);
     setNotes(updatedNotes);
     storageUtils.saveNotes(updatedNotes);
   };
 
   const toggleFavorite = (id: string): void => {
-    const note = notes.find(n => n.id === id);
+    const note = notes.find((n) => n.id === id);
     if (note) {
       updateNote(id, { isFavorite: !note.isFavorite });
     }
@@ -54,6 +56,6 @@ export const useLocalNotes = () => {
     saveNote,
     updateNote,
     deleteNote,
-    toggleFavorite
+    toggleFavorite,
   };
 };

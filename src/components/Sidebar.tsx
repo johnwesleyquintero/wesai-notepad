@@ -1,5 +1,5 @@
-import { Plus, Clock, Star, FileText, Settings } from 'lucide-react';
-import { NoteFilter } from '../types/note';
+import { Plus, Clock, Star, FileText, Settings } from "lucide-react";
+import { NoteFilter } from "../types/note";
 
 interface SidebarProps {
   currentFilter: NoteFilter;
@@ -8,11 +8,16 @@ interface SidebarProps {
   onOpenSettings: () => void;
 }
 
-export const Sidebar = ({ currentFilter, onFilterChange, onNewNote, onOpenSettings }: SidebarProps) => {
+export const Sidebar = ({
+  currentFilter,
+  onFilterChange,
+  onNewNote,
+  onOpenSettings,
+}: SidebarProps) => {
   const navItems: { id: NoteFilter; label: string; icon: typeof Clock }[] = [
-    { id: 'recent', label: 'Recent', icon: Clock },
-    { id: 'favorites', label: 'Favorites', icon: Star },
-    { id: 'all', label: 'All Notes', icon: FileText }
+    { id: "recent", label: "Recent", icon: Clock },
+    { id: "favorites", label: "Favorites", icon: Star },
+    { id: "all", label: "All Notes", icon: FileText },
   ];
 
   return (
@@ -39,8 +44,8 @@ export const Sidebar = ({ currentFilter, onFilterChange, onNewNote, onOpenSettin
             onClick={() => onFilterChange(id)}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg mb-1 transition-colors ${
               currentFilter === id
-                ? 'bg-zinc-900 text-white'
-                : 'text-zinc-700 hover:bg-stone-100'
+                ? "bg-zinc-900 text-white"
+                : "text-zinc-700 hover:bg-stone-100"
             }`}
           >
             <Icon size={18} />

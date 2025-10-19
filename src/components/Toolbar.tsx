@@ -1,17 +1,26 @@
-import { Sparkles, Check, Loader2 } from 'lucide-react';
+import { useState } from "react";
+import { Sparkles, Check, Loader2 } from "lucide-react";
+import { AIEnhanceModal } from "./AIEnhanceModal";
 
 interface ToolbarProps {
   isSaving: boolean;
+  content: string;
+  onUpdateContent: (newContent: string) => void;
 }
 
-export const Toolbar = ({ isSaving }: ToolbarProps) => {
+export const Toolbar = ({
+  isSaving,
+  content,
+  onUpdateContent,
+}: ToolbarProps) => {
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+
   return (
-    <div className="border-b border-stone-200 bg-white px-8 py-4 flex items-center justify-between">
+    <div className="border-b border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-8 py-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
         <button
-          disabled
-          className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-400 rounded-lg cursor-not-allowed"
-          title="AI features coming soon"
+          onClick={() => setIsAIModalOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-zinc-900 dark:bg-zinc-700 text-white rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-600 transition-colors"
         >
           <Sparkles size={18} />
           <span className="font-medium">AI Enhance</span>
@@ -31,6 +40,13 @@ export const Toolbar = ({ isSaving }: ToolbarProps) => {
           </div>
         )}
       </div>
+
+      <AIEnhanceModal
+        isOpen={isAIModalOpen}
+        onClose={() => setIsAIModalOpen(false)}
+        content={content}
+        onApplyChanges={onUpdateContent}
+      />
     </div>
   );
 };

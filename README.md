@@ -14,34 +14,34 @@ Built with modular, scalable architecture and optimized for rapid iteration, thi
 
 ## 🧩 Tech Stack
 
-| Layer | Technology |
-|-------|-------------|
-| **Frontend** | React (TypeScript) + Vite + TailwindCSS |
-| **State Management** | useState / useReducer |
-| **Storage** | localStorage |
-| **AI Integration (Planned)** | Gemini API (Google AI Studio) |
+| Layer                        | Technology                              |
+| ---------------------------- | --------------------------------------- |
+| **Frontend**                 | React (TypeScript) + Vite + TailwindCSS |
+| **State Management**         | useState / useReducer                   |
+| **Storage**                  | localStorage                            |
+| **AI Integration (Planned)** | Gemini API (Google AI Studio)           |
 
 ---
 
 ## ✨ Core Features
 
-- 📝 **Create, Edit, Delete Notes** — persisted via localStorage  
-- 💾 **Auto-Save** — 3-second debounce with “Saved” indicator  
-- ⭐ **Favorites** — star notes for quick access  
-- 🧭 **Navigation Sidebar** — filter by Recent, Favorites, or All Notes  
-- ⚠️ **Delete Confirmation** — prevents accidental data loss  
-- 🤖 **AI Enhance Placeholder** — ready for Gemini API integration  
+- 📝 **Create, Edit, Delete Notes** — persisted via localStorage
+- 💾 **Auto-Save** — 3-second debounce with “Saved” indicator
+- ⭐ **Favorites** — star notes for quick access
+- 🧭 **Navigation Sidebar** — filter by Recent, Favorites, or All Notes
+- ⚠️ **Delete Confirmation** — prevents accidental data loss
+- 🤖 **AI Enhance Placeholder** — ready for Gemini API integration
 - 🎨 **Minimalist UI** — inspired by Notion and Obsidian
 
 ---
 
 ## 🎨 Design Language
 
-- **Theme:** Minimal, clean, distraction-free  
-- **Color Palette:**  
-  - Background: `#f5f5f4`  
-  - Text: `#18181b`  
-  - UI Elements: `#e2e8f0`  
+- **Theme:** Minimal, clean, distraction-free
+- **Color Palette:**
+  - Background: `#f5f5f4`
+  - Text: `#18181b`
+  - UI Elements: `#e2e8f0`
 
 **Core Components**
 | Component | Purpose |
@@ -69,7 +69,7 @@ src/
 ├── utils/
 │   └── storage.ts
 └── App.tsx
-````
+```
 
 ---
 
@@ -85,9 +85,9 @@ methods = ["getNotes", "saveNote", "updateNote", "deleteNote"];
 
 ### Auto-Save System
 
-* Saves after **3 seconds of inactivity**
-* Displays “Saved” indicator once persisted
-* Updates localStorage instantly for reliability
+- Saves after **3 seconds of inactivity**
+- Displays “Saved” indicator once persisted
+- Updates localStorage instantly for reliability
 
 ---
 
@@ -95,23 +95,25 @@ methods = ["getNotes", "saveNote", "updateNote", "deleteNote"];
 
 **Settings Modal** (Phase 1 Complete)
 
-* Securely stores Gemini API Key in localStorage
-* Input field with show/hide toggle
-* Direct link to [Google AI Studio](https://aistudio.google.com)
-* Visual save confirmation feedback
-* Fully modular for easy API call integration in Phase 2
+- Securely stores Gemini API Key in localStorage
+- Input field with show/hide toggle
+- Direct link to [Google AI Studio](https://aistudio.google.com)
+- Visual save confirmation feedback
+- Fully modular for easy API call integration in Phase 2
 
 ---
 
-## 🧠 Phase 2 — Planned Enhancements
+## 🧠 Phase 2 — Enhancements
 
-| Feature                  | Description                                  |
-| ------------------------ | -------------------------------------------- |
-| 🤖 Gemini AI Integration | Text enhancement and tone rewriting          |
-| 🕓 Version History       | Local revision logs per note                 |
-| 🗂️ Tag System           | Organize and filter notes                    |
-| 📤 Export Options        | Markdown and JSON support                    |
-| ☁️ Supabase Sync Layer   | Optional remote backup and multi-device sync |
+| Feature                  | Description                                  | Status       |
+| ------------------------ | -------------------------------------------- | ------------ |
+| 🔍 Search Functionality  | Search notes by title and content            | ✅ Completed |
+| 🌙 Dark Mode             | Toggle between light and dark themes         | ✅ Completed |
+| 🗂️ Categories/Tags       | Organize notes with custom categories        | ✅ Completed |
+| 🤖 Gemini AI Integration | Text enhancement and tone rewriting          | 🔄 Planned   |
+| 🕓 Version History       | Local revision logs per note                 | 🔄 Planned   |
+| 📤 Export Options        | Markdown and JSON support                    | 🔄 Planned   |
+| ☁️ Supabase Sync Layer   | Optional remote backup and multi-device sync | 🔄 Planned   |
 
 ---
 
@@ -148,17 +150,17 @@ npm run build
 **Goal:** Local-first → Continuous deployment via **Netlify**
 **Pipeline Setup:**
 
-* GitHub → Netlify auto-deploy
-* LocalStorage persistence for now (Supabase optional Phase 2)
+- GitHub → Netlify auto-deploy
+- LocalStorage persistence for now (Supabase optional Phase 2)
 
 ---
 
 ## 🧭 Developer Guidelines
 
-* Keep logic **modular and documented**
-* Maintain clear versioning for each feature addition
-* Favor clarity and responsiveness over complexity
-* Use this repo as the foundation for future WesAI applications
+- Keep logic **modular and documented**
+- Maintain clear versioning for each feature addition
+- Favor clarity and responsiveness over complexity
+- Use this repo as the foundation for future WesAI applications
 
 ---
 
@@ -173,7 +175,7 @@ npm run build
 ## 👤 Author
 
 **John Wesley Quintero**
-*Amazon Specialist | Full-Stack Developer | Founder @ VAXPH*
+_Amazon Specialist | Full-Stack Developer | Founder @ VAXPH_
 Building sovereign digital systems with AI-assisted scalability.
 
 ---

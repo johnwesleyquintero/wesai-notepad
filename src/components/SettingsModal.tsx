@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Settings, X, Eye, EyeOff, Save } from 'lucide-react';
-import { AppSettings } from '../types/settings';
-import { settingsUtils } from '../utils/settings';
+import { useState, useEffect } from "react";
+import { Settings, X, Eye, EyeOff, Save, Moon, Sun } from "lucide-react";
+import { AppSettings } from "../types/settings";
+import { settingsUtils } from "../utils/settings";
+import { useTheme } from "../contexts/useTheme";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -9,7 +10,8 @@ interface SettingsModalProps {
 }
 
 export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
-  const [apiKey, setApiKey] = useState('');
+  const { theme, toggleTheme } = useTheme();
+  const [apiKey, setApiKey] = useState("");
   const [showApiKey, setShowApiKey] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -23,7 +25,7 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
 
   const handleSave = () => {
     const settings: AppSettings = {
-      geminiApiKey: apiKey.trim()
+      geminiApiKey: apiKey.trim(),
     };
     settingsUtils.saveSettings(settings);
     setSaved(true);
@@ -34,7 +36,7 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 max-w-lg w-full mx-4 shadow-2xl">
+      <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 max-w-lg w-full mx-4 shadow-2xl">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-zinc-100 rounded-full">
@@ -51,13 +53,32 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
         </div>
 
         <div className="space-y-4">
+          <div className="flex items-center justify-between p-3 bg-stone-100 dark:bg-zinc-800 rounded-lg">
+            <div className="flex items-center gap-3">
+              {theme === "dark" ? (
+                <Moon size={20} className="text-zinc-700 dark:text-zinc-300" />
+              ) : (
+                <Sun size={20} className="text-zinc-700 dark:text-zinc-300" />
+              )}
+              <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                {theme === "dark" ? "Dark Mode" : "Light Mode"}
+              </span>
+            </div>
+            <button
+              onClick={toggleTheme}
+              className="px-3 py-1.5 bg-zinc-900 dark:bg-zinc-700 text-white rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-600 transition-colors"
+            >
+              {theme === "dark" ? "Switch to Light" : "Switch to Dark"}
+            </button>
+          </div>
+
           <div>
-            <label className="block text-sm font-medium text-zinc-700 mb-2">
+            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
               Gemini API Key
             </label>
             <div className="relative">
               <input
-                type={showApiKey ? 'text' : 'password'}
+                type={showApiKey ? "text" : "password"}
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
                 placeholder="Enter your Gemini API key..."
@@ -71,7 +92,7 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
               </button>
             </div>
             <p className="text-xs text-zinc-500 mt-2">
-              Get your API key from{' '}
+              Get your API key from{" "}
               <a
                 href="https://aistudio.google.com/app/apikey"
                 target="_blank"
@@ -95,7 +116,7 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
               className="px-4 py-2 bg-zinc-900 text-white hover:bg-zinc-800 rounded-lg transition-colors font-medium flex items-center gap-2"
             >
               <Save size={18} />
-              {saved ? 'Saved!' : 'Save'}
+              {saved ? "Saved!" : "Save"}
             </button>
           </div>
         </div>

@@ -1,5 +1,5 @@
-import { Star, Trash2 } from 'lucide-react';
-import { Note } from '../types/note';
+import { Star, Trash2, Tag } from "lucide-react";
+import { Note } from "../types/note";
 
 interface NoteCardProps {
   note: Note;
@@ -14,7 +14,7 @@ export const NoteCard = ({
   isSelected,
   onClick,
   onDelete,
-  onToggleFavorite
+  onToggleFavorite,
 }: NoteCardProps) => {
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -22,14 +22,19 @@ export const NoteCard = ({
     const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
     if (diffInHours < 24) {
-      return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+      });
     }
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
   const getPreview = (content: string) => {
     const cleanContent = content.trim();
-    return cleanContent.length > 120 ? cleanContent.slice(0, 120) + '...' : cleanContent;
+    return cleanContent.length > 120
+      ? cleanContent.slice(0, 120) + "..."
+      : cleanContent;
   };
 
   return (
@@ -37,13 +42,13 @@ export const NoteCard = ({
       onClick={onClick}
       className={`p-4 rounded-lg border-2 cursor-pointer transition-all group ${
         isSelected
-          ? 'border-zinc-900 bg-white shadow-md'
-          : 'border-stone-200 bg-white hover:border-stone-300 hover:shadow-sm'
+          ? "border-zinc-900 bg-white shadow-md"
+          : "border-stone-200 bg-white hover:border-stone-300 hover:shadow-sm"
       }`}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
         <h3 className="font-semibold text-zinc-900 flex-1 truncate">
-          {note.title || 'Untitled'}
+          {note.title || "Untitled"}
         </h3>
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
@@ -52,10 +57,10 @@ export const NoteCard = ({
               onToggleFavorite();
             }}
             className={`p-1.5 rounded hover:bg-stone-100 transition-colors ${
-              note.isFavorite ? 'text-yellow-500' : 'text-zinc-400'
+              note.isFavorite ? "text-yellow-500" : "text-zinc-400"
             }`}
           >
-            <Star size={16} fill={note.isFavorite ? 'currentColor' : 'none'} />
+            <Star size={16} fill={note.isFavorite ? "currentColor" : "none"} />
           </button>
           <button
             onClick={(e) => {
@@ -70,7 +75,7 @@ export const NoteCard = ({
       </div>
 
       <p className="text-sm text-zinc-600 mb-3 line-clamp-2">
-        {getPreview(note.content) || 'No content'}
+        {getPreview(note.content) || "No content"}
       </p>
 
       <div className="flex items-center justify-between text-xs text-zinc-400">
@@ -79,6 +84,22 @@ export const NoteCard = ({
           <Star size={12} fill="currentColor" className="text-yellow-500" />
         )}
       </div>
+
+      {note.categories && note.categories.length > 0 && (
+        <div className="flex flex-wrap gap-1 mt-2">
+          {note.categories.map((category) => (
+            <div
+              key={category}
+              className="flex items-center gap-1 px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-700 rounded text-xs"
+            >
+              <Tag size={10} className="text-zinc-500 dark:text-zinc-400" />
+              <span className="text-zinc-600 dark:text-zinc-300">
+                {category}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

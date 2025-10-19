@@ -1,4 +1,4 @@
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from "lucide-react";
 
 interface DeleteModalProps {
   isOpen: boolean;
@@ -7,7 +7,12 @@ interface DeleteModalProps {
   onCancel: () => void;
 }
 
-export const DeleteModal = ({ isOpen, noteTitle, onConfirm, onCancel }: DeleteModalProps) => {
+export const DeleteModal = ({
+  isOpen,
+  noteTitle,
+  onConfirm,
+  onCancel,
+}: DeleteModalProps) => {
   if (!isOpen) return null;
 
   return (
@@ -21,7 +26,9 @@ export const DeleteModal = ({ isOpen, noteTitle, onConfirm, onCancel }: DeleteMo
         </div>
 
         <p className="text-zinc-600 mb-6">
-          Are you sure you want to delete "<span className="font-medium">{noteTitle || 'Untitled'}</span>"? This action cannot be undone.
+          Are you sure you want to delete "
+          <span className="font-medium">{noteTitle || "Untitled"}</span>"? This
+          action cannot be undone.
         </p>
 
         <div className="flex gap-3 justify-end">
