@@ -31,7 +31,7 @@ export const geminiApi = {
       `;
 
       const response = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" +
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
           apiKey,
         {
           method: "POST",
