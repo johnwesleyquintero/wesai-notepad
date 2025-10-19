@@ -60,8 +60,6 @@ export const geminiApi = {
 
       const data = await response.json();
 
-      console.log("Gemini API Response Data:", data); // Add this line for debugging
-
       if (!response.ok) {
         return {
           success: false,
