@@ -7,7 +7,6 @@ Designed with future **Gemini API integration** and AI text enhancement workflow
 
 <img width="887" height="673" alt="image" src="https://github.com/user-attachments/assets/ef561839-0545-46e0-9bef-89870aca1fb5" />
 
-
 ## 🚀 Overview
 
 **WesAI Notepad v0.1** enables users to create, edit, and manage notes seamlessly with auto-save and persistent localStorage storage.  

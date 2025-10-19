@@ -2,22 +2,31 @@ import { useState, useEffect, useRef } from "react";
 import { Note } from "../types/note";
 import { CategorySelector } from "./CategorySelector";
 import { Toolbar } from "./Toolbar";
+import { DEBOUNCE_DELAY_NOTE_EDITOR } from "../utils/constants";
 
 interface NoteEditorProps {
   note: Note;
   onUpdate: (id: string, updates: Partial<Note>) => void;
   onSaveStateChange: (isSaving: boolean) => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 export const NoteEditor = ({
   note,
   onUpdate,
   onSaveStateChange,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
 }: NoteEditorProps) => {
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
   const [isSaving, setIsSaving] = useState(false);
-  const saveTimeoutRef = useRef<NodeJS.Timeout>();
+  const saveTimeoutRef = useRef<number>();
 
   useEffect(() => {
     setTitle(note.title);
@@ -36,7 +45,7 @@ export const NoteEditor = ({
       onUpdate(note.id, { title: newTitle, content: newContent });
       setIsSaving(false);
       onSaveStateChange(false);
-    }, 3000);
+    }, DEBOUNCE_DELAY_NOTE_EDITOR);
   };
 
   const handleTitleChange = (newTitle: string) => {
@@ -68,6 +77,10 @@ export const NoteEditor = ({
         isSaving={isSaving}
         content={content}
         onUpdateContent={handleUpdateContent}
+        onUndo={onUndo}
+        onRedo={onRedo}
+        canUndo={canUndo}
+        canRedo={canRedo}
       />
 
       <input

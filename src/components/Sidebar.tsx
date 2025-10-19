@@ -1,5 +1,5 @@
 import { Plus, Clock, Star, FileText, Settings } from "lucide-react";
-import { NoteFilter } from "../types/note";
+import { NoteFilter, NoteFilters } from "../types/note";
 
 interface SidebarProps {
   currentFilter: NoteFilter;
@@ -15,9 +15,9 @@ export const Sidebar = ({
   onOpenSettings,
 }: SidebarProps) => {
   const navItems: { id: NoteFilter; label: string; icon: typeof Clock }[] = [
-    { id: "recent", label: "Recent", icon: Clock },
-    { id: "favorites", label: "Favorites", icon: Star },
-    { id: "all", label: "All Notes", icon: FileText },
+    { id: NoteFilters.RECENT, label: "Recent", icon: Clock },
+    { id: NoteFilters.FAVORITES, label: "Favorites", icon: Star },
+    { id: NoteFilters.ALL, label: "All Notes", icon: FileText },
   ];
 
   return (

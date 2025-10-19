@@ -8,7 +8,8 @@ export const storageUtils = {
       const notes = localStorage.getItem(NOTES_KEY);
       return notes ? JSON.parse(notes) : [];
     } catch (error) {
-      console.error("Failed to load notes:", error);
+      console.error("Error loading notes from localStorage:", error);
+      // Optionally, notify user or use a default empty state
       return [];
     }
   },
@@ -17,7 +18,8 @@ export const storageUtils = {
     try {
       localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
     } catch (error) {
-      console.error("Failed to save notes:", error);
+      console.error("Error saving notes to localStorage:", error);
+      // Optionally, notify user about save failure
     }
   },
 

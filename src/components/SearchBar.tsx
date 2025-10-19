@@ -1,5 +1,6 @@
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
+import { DEBOUNCE_DELAY_SEARCH_BAR } from "../utils/constants";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -11,7 +12,7 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       onSearch(query);
-    }, 300);
+    }, DEBOUNCE_DELAY_SEARCH_BAR);
 
     return () => clearTimeout(debounceTimer);
   }, [query, onSearch]);

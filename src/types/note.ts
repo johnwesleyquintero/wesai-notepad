@@ -8,4 +8,10 @@ export interface Note {
   categories?: string[];
 }
 
-export type NoteFilter = "all" | "recent" | "favorites";
+export const NoteFilters = {
+  ALL: "all",
+  RECENT: "recent",
+  FAVORITES: "favorites",
+} as const;
+
+export type NoteFilter = (typeof NoteFilters)[keyof typeof NoteFilters];

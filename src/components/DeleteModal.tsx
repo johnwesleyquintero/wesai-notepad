@@ -17,12 +17,27 @@ export const DeleteModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
+      <div
+        className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-modal-title"
+      >
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-red-100 rounded-full">
-            <AlertTriangle size={24} className="text-red-600" />
+            <AlertTriangle
+              size={24}
+              className="text-red-600"
+              aria-hidden="true"
+              role="img"
+            />
           </div>
-          <h2 className="text-xl font-semibold text-zinc-900">Delete Note?</h2>
+          <h2
+            id="delete-modal-title"
+            className="text-xl font-semibold text-zinc-900"
+          >
+            Delete Note?
+          </h2>
         </div>
 
         <p className="text-zinc-600 mb-6">

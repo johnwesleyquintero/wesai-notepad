@@ -1,17 +1,25 @@
 import { useState } from "react";
-import { Sparkles, Check, Loader2 } from "lucide-react";
+import { Sparkles, Check, Loader2, Undo, Redo } from "lucide-react";
 import { AIEnhanceModal } from "./AIEnhanceModal";
 
 interface ToolbarProps {
   isSaving: boolean;
   content: string;
   onUpdateContent: (newContent: string) => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 export const Toolbar = ({
   isSaving,
   content,
   onUpdateContent,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
 }: ToolbarProps) => {
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
 
@@ -24,6 +32,28 @@ export const Toolbar = ({
         >
           <Sparkles size={18} />
           <span className="font-medium">AI Enhance</span>
+        </button>
+        <button
+          onClick={onUndo}
+          disabled={!canUndo}
+          className={`p-2 rounded-lg transition-colors ${
+            canUndo
+              ? "text-zinc-700 hover:bg-stone-100 dark:text-zinc-300 dark:hover:bg-zinc-700"
+              : "text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
+          }`}
+        >
+          <Undo size={18} />
+        </button>
+        <button
+          onClick={onRedo}
+          disabled={!canRedo}
+          className={`p-2 rounded-lg transition-colors ${
+            canRedo
+              ? "text-zinc-700 hover:bg-stone-100 dark:text-zinc-300 dark:hover:bg-zinc-700"
+              : "text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
+          }`}
+        >
+          <Redo size={18} />
         </button>
       </div>
 

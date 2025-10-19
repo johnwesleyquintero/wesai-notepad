@@ -1,14 +1,34 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Note } from "../types/note";
 import { storageUtils } from "../utils/storage";
+import { debounce } from "../utils/debounce";
+import { DEBOUNCE_DELAY_SAVE_NOTES } from "../utils/constants";
+import { useUndoRedo } from "./useUndoRedo";
 
 export const useLocalNotes = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const {
+    state: notes,
+    setState: setNotes,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+  } = useUndoRedo<Note[]>([]);
+
+  const debouncedSaveNotes = useRef(
+    debounce((updatedNotes: Note[]) => {
+      storageUtils.saveNotes(updatedNotes);
+    }, DEBOUNCE_DELAY_SAVE_NOTES),
+  ).current;
 
   useEffect(() => {
     const loadedNotes = storageUtils.getNotes();
-    setNotes(loadedNotes);
-  }, []);
+    setNotes(loadedNotes, { skipHistory: true }); // Load initial notes without adding to undo history
+  }, [setNotes]);
+
+  useEffect(() => {
+    debouncedSaveNotes(notes);
+  }, [notes, debouncedSaveNotes]);
 
   const saveNote = (title: string, content: string): Note => {
     const newNote: Note = {
@@ -23,7 +43,6 @@ export const useLocalNotes = () => {
 
     const updatedNotes = [newNote, ...notes];
     setNotes(updatedNotes);
-    storageUtils.saveNotes(updatedNotes);
     return newNote;
   };
 
@@ -35,13 +54,11 @@ export const useLocalNotes = () => {
       note.id === id ? { ...note, ...updates, updatedAt: Date.now() } : note,
     );
     setNotes(updatedNotes);
-    storageUtils.saveNotes(updatedNotes);
   };
 
   const deleteNote = (id: string): void => {
     const updatedNotes = notes.filter((note) => note.id !== id);
     setNotes(updatedNotes);
-    storageUtils.saveNotes(updatedNotes);
   };
 
   const toggleFavorite = (id: string): void => {
@@ -57,5 +74,9 @@ export const useLocalNotes = () => {
     updateNote,
     deleteNote,
     toggleFavorite,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   };
 };

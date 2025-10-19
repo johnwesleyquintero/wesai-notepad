@@ -36,17 +36,33 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 max-w-lg w-full mx-4 shadow-2xl">
+      <div
+        className="bg-white dark:bg-zinc-900 rounded-xl p-6 max-w-lg w-full mx-4 shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="settings-modal-title"
+      >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-zinc-100 rounded-full">
-              <Settings size={24} className="text-zinc-700" />
+              <Settings
+                size={24}
+                className="text-zinc-700"
+                aria-hidden="true"
+                role="img"
+              />
             </div>
-            <h2 className="text-xl font-semibold text-zinc-900">Settings</h2>
+            <h2
+              id="settings-modal-title"
+              className="text-xl font-semibold text-zinc-900"
+            >
+              Settings
+            </h2>
           </div>
           <button
             onClick={onClose}
             className="p-2 hover:bg-stone-100 rounded-lg transition-colors text-zinc-500"
+            aria-label="Close settings"
           >
             <X size={20} />
           </button>
@@ -56,9 +72,19 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
           <div className="flex items-center justify-between p-3 bg-stone-100 dark:bg-zinc-800 rounded-lg">
             <div className="flex items-center gap-3">
               {theme === "dark" ? (
-                <Moon size={20} className="text-zinc-700 dark:text-zinc-300" />
+                <Moon
+                  size={20}
+                  className="text-zinc-700 dark:text-zinc-300"
+                  aria-hidden="true"
+                  role="img"
+                />
               ) : (
-                <Sun size={20} className="text-zinc-700 dark:text-zinc-300" />
+                <Sun
+                  size={20}
+                  className="text-zinc-700 dark:text-zinc-300"
+                  aria-hidden="true"
+                  role="img"
+                />
               )}
               <span className="font-medium text-zinc-800 dark:text-zinc-200">
                 {theme === "dark" ? "Dark Mode" : "Light Mode"}
@@ -67,17 +93,26 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
             <button
               onClick={toggleTheme}
               className="px-3 py-1.5 bg-zinc-900 dark:bg-zinc-700 text-white rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-600 transition-colors"
+              aria-label={
+                theme === "dark"
+                  ? "Switch to Light Mode"
+                  : "Switch to Dark Mode"
+              }
             >
               {theme === "dark" ? "Switch to Light" : "Switch to Dark"}
             </button>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+            <label
+              htmlFor="gemini-api-key"
+              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
+            >
               Gemini API Key
             </label>
             <div className="relative">
               <input
+                id="gemini-api-key"
                 type={showApiKey ? "text" : "password"}
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
@@ -87,6 +122,8 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
               <button
                 onClick={() => setShowApiKey(!showApiKey)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                data-testid="toggle-api-key-visibility"
+                aria-label={showApiKey ? "Hide API key" : "Show API key"}
               >
                 {showApiKey ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -115,7 +152,7 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
               onClick={handleSave}
               className="px-4 py-2 bg-zinc-900 text-white hover:bg-zinc-800 rounded-lg transition-colors font-medium flex items-center gap-2"
             >
-              <Save size={18} />
+              <Save size={18} aria-hidden="true" role="img" />
               {saved ? "Saved!" : "Save"}
             </button>
           </div>

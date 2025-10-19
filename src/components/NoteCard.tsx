@@ -68,6 +68,7 @@ export const NoteCard = ({
               onDelete();
             }}
             className="p-1.5 rounded hover:bg-red-50 text-zinc-400 hover:text-red-600 transition-colors"
+            data-testid="delete-button"
           >
             <Trash2 size={16} />
           </button>
