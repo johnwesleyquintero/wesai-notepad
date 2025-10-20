@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { FileText, Menu } from "lucide-react";
+import { FileText, Menu, Plus } from "lucide-react";
 import { useLocalNotes } from "../hooks/useLocalNotes";
 import { Sidebar } from "../components/Sidebar";
 import { NoteCard } from "../components/NoteCard";
@@ -200,7 +200,7 @@ export const Home = () => {
                 onRedo={redo}
                 canUndo={canUndo}
                 canRedo={canRedo}
-                onBack={() => setSelectedNoteId(null)} // New prop for back button
+                onBack={() => setSelectedNoteId(null)}
               />
             ) : (
               <div className="flex-1 flex items-center justify-center text-zinc-400">
@@ -219,6 +219,15 @@ export const Home = () => {
           </div>
         </div>
       </div>
+
+      {/* Floating Action Button for New Note on mobile */}
+      <button
+        onClick={handleNewNote}
+        className="fixed bottom-6 right-6 lg:hidden bg-zinc-900 text-white p-4 rounded-full shadow-lg hover:bg-zinc-800 transition-colors z-40"
+        aria-label="New Note"
+      >
+        <Plus size={24} />
+      </button>
 
       <DeleteModal
         isOpen={deleteModalOpen}
