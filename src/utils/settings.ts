@@ -6,10 +6,10 @@ export const settingsUtils = {
   getSettings(): AppSettings {
     try {
       const settings = localStorage.getItem(SETTINGS_KEY);
-      return settings ? JSON.parse(settings) : { geminiApiKey: "" };
+      return settings ? JSON.parse(settings) : { geminiApiKey: "", useSupabase: false };
     } catch (error) {
       console.error("Failed to load settings:", error);
-      return { geminiApiKey: "" };
+      return { geminiApiKey: "", useSupabase: false };
     }
   },
 

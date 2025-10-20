@@ -14,11 +14,13 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
   const [apiKey, setApiKey] = useState("");
   const [showApiKey, setShowApiKey] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [useSupabaseSync, setUseSupabaseSync] = useState(false); // New state for Supabase toggle
 
   useEffect(() => {
     if (isOpen) {
       const settings = settingsUtils.getSettings();
       setApiKey(settings.geminiApiKey);
+      setUseSupabaseSync(settings.useSupabase); // Initialize Supabase toggle state
       setSaved(false);
     }
   }, [isOpen]);
@@ -26,10 +28,20 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
   const handleSave = () => {
     const settings: AppSettings = {
       geminiApiKey: apiKey.trim(),
+      useSupabase: useSupabaseSync, // Save Supabase setting
     };
     settingsUtils.saveSettings(settings);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleToggleSupabase = () => {
+    setUseSupabaseSync((prev) => {
+      const newSupabaseState = !prev;
+      const settings = settingsUtils.getSettings();
+      settingsUtils.saveSettings({ ...settings, useSupabase: newSupabaseState });
+      return newSupabaseState;
+    });
   };
 
   if (!isOpen) return null;
@@ -100,6 +112,26 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
               }
             >
               {theme === "dark" ? "Switch to Light" : "Switch to Dark"}
+            </button>
+          </div>
+
+          {/* New Supabase Sync Toggle */}
+          <div className="flex items-center justify-between p-3 bg-stone-100 dark:bg-zinc-800 rounded-lg">
+            <div className="flex items-center gap-3">
+              <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                Supabase Sync
+              </span>
+            </div>
+            <button
+              onClick={handleToggleSupabase}
+              className="px-3 py-1.5 bg-zinc-900 dark:bg-zinc-700 text-white rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-600 transition-colors"
+              aria-label={
+                useSupabaseSync
+                  ? "Disable Supabase Synchronization"
+                  : "Enable Supabase Synchronization"
+              }
+            >
+              {useSupabaseSync ? "Enabled" : "Disabled"}
             </button>
           </div>
 
