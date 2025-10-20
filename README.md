@@ -1,4 +1,4 @@
-# 🧠 WesAI Notepad v0.1
+# WesAI Notepad v0.1
 
 A **local-first AI-enhanced notepad** built with **Vite + React (TypeScript)** for fast, offline-capable note creation and management.  
 Designed with future **Gemini API integration** and AI text enhancement workflows in mind.
@@ -7,14 +7,14 @@ Designed with future **Gemini API integration** and AI text enhancement workflow
 
 <img width="887" height="673" alt="image" src="https://github.com/user-attachments/assets/ef561839-0545-46e0-9bef-89870aca1fb5" />
 
-## 🚀 Overview
+## Overview
 
 **WesAI Notepad v0.1** enables users to create, edit, and manage notes seamlessly with auto-save and persistent localStorage storage.  
 Built with modular, scalable architecture and optimized for rapid iteration, this app serves as the foundation for an AI-augmented writing environment.
 
 ---
 
-## 🧩 Tech Stack
+## Tech Stack
 
 | Layer                        | Technology                              |
 | ---------------------------- | --------------------------------------- |
@@ -25,19 +25,19 @@ Built with modular, scalable architecture and optimized for rapid iteration, thi
 
 ---
 
-## ✨ Core Features
+## Core Features
 
-- 📝 **Create, Edit, Delete Notes** — persisted via localStorage
-- 💾 **Auto-Save** — 3-second debounce with “Saved” indicator
-- ⭐ **Favorites** — star notes for quick access
-- 🧭 **Navigation Sidebar** — filter by Recent, Favorites, or All Notes
-- ⚠️ **Delete Confirmation** — prevents accidental data loss
-- 🤖 **AI Enhance Placeholder** — ready for Gemini API integration
-- 🎨 **Minimalist UI** — inspired by Notion and Obsidian
+- Create, Edit, Delete Notes — persisted via localStorage
+- Auto-Save — 3-second debounce with “Saved” indicator
+- Favorites — star notes for quick access
+- Navigation Sidebar — filter by Recent, Favorites, or All Notes
+- Delete Confirmation — prevents accidental data loss
+- AI Enhance Text — AI-powered text enhancement with customizable tones, including a "Custom" option to define your own tone.
+- Minimalist UI — inspired by Notion and Obsidian
 
 ---
 
-## 🎨 Design Language
+## Design Language
 
 - **Theme:** Minimal, clean, distraction-free
 - **Color Palette:**
@@ -55,7 +55,7 @@ Built with modular, scalable architecture and optimized for rapid iteration, thi
 
 ---
 
-## 🧱 File Structure
+## File Structure
 
 ```plaintext
 src/
@@ -75,7 +75,7 @@ src/
 
 ---
 
-## ⚙️ Core Logic
+## Core Logic
 
 ### Custom Hook: `useLocalNotes`
 
@@ -93,7 +93,7 @@ methods = ["getNotes", "saveNote", "updateNote", "deleteNote"];
 
 ---
 
-## 🔐 Gemini API Key Integration
+## Gemini API Key Integration
 
 **Settings Modal** (Phase 1 Complete)
 
@@ -105,21 +105,21 @@ methods = ["getNotes", "saveNote", "updateNote", "deleteNote"];
 
 ---
 
-## 🧠 Phase 2 — Enhancements
+## Phase 2 — Enhancements
 
 | Feature                  | Description                                  | Status       |
 | ------------------------ | -------------------------------------------- | ------------ |
-| 🔍 Search Functionality  | Search notes by title and content            | ✅ Completed |
-| 🌙 Dark Mode             | Toggle between light and dark themes         | ✅ Completed |
-| 🗂️ Categories/Tags       | Organize notes with custom categories        | ✅ Completed |
-| 🤖 Gemini AI Integration | Text enhancement and tone rewriting          | 🔄 Planned   |
-| 🕓 Version History       | Local revision logs per note                 | 🔄 Planned   |
-| 📤 Export Options        | Markdown and JSON support                    | 🔄 Planned   |
-| ☁️ Supabase Sync Layer   | Optional remote backup and multi-device sync | 🔄 Planned   |
+| Search Functionality  | Search notes by title and content            | ✅ Completed |
+| Dark Mode             | Toggle between light and dark themes         | ✅ Completed |
+| Categories/Tags       | Organize notes with custom categories        | ✅ Completed |
+| Gemini AI Integration | Text enhancement and tone rewriting          | ✅ Completed |
+| Version History       | Local revision logs per note                 | 🔄 Planned   |
+| Export Options        | Markdown and JSON support                    | 🔄 Planned   |
+| Supabase Sync Layer   | Optional remote backup and multi-device sync | 🔄 Planned   |
 
 ---
 
-## ⚡️ Quick Start
+## Quick Start
 
 **1. Create project**
 
@@ -147,7 +147,7 @@ npm run build
 
 ---
 
-## ☁️ Deployment
+## Deployment
 
 **Goal:** Local-first → Continuous deployment via **Netlify**
 **Pipeline Setup:**
@@ -157,7 +157,7 @@ npm run build
 
 ---
 
-## 🧭 Developer Guidelines
+## Developer Guidelines
 
 - Keep logic **modular and documented**
 - Maintain clear versioning for each feature addition
@@ -166,7 +166,7 @@ npm run build
 
 ---
 
-## 🧩 Version
+## Version
 
 **WesAI Notepad v0.1 (Prototype)**
 
@@ -174,7 +174,7 @@ npm run build
 
 ---
 
-## 👤 Author
+## Author
 
 **John Wesley Quintero**
 _Amazon Specialist | Full-Stack Developer | Founder @ VAXPH_
@@ -182,6 +182,6 @@ Building sovereign digital systems with AI-assisted scalability.
 
 ---
 
-## 📜 License
+## License
 
 MIT License © 2025 John Wesley Quintero
