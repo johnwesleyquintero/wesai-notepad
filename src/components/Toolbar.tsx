@@ -59,12 +59,12 @@ export const Toolbar = ({
 
       <div className="flex items-center gap-2 text-sm">
         {isSaving ? (
-          <div className="flex items-center gap-2 text-zinc-500">
+          <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
             <Loader2 size={16} className="animate-spin" />
             <span>Saving...</span>
           </div>
         ) : (
-          <div className="flex items-center gap-2 text-emerald-600">
+          <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
             <Check size={16} />
             <span>Saved</span>
           </div>
