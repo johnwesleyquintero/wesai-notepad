@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Sparkles, X, Check, AlertCircle, Loader2 } from "lucide-react";
 import { geminiApi } from "../utils/geminiApi";
+import useMobile from "../hooks/useMobile";
 
 interface AIEnhanceModalProps {
   isOpen: boolean;
@@ -60,6 +61,7 @@ export const AIEnhanceModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isEnhanced, setIsEnhanced] = useState<boolean>(false);
+  const isMobile = useMobile();
 
   useEffect(() => {
     if (isOpen) {
@@ -103,7 +105,9 @@ export const AIEnhanceModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 max-w-3xl w-full mx-4 shadow-2xl">
+      <div
+        className={`bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-2xl ${isMobile ? "max-w-full w-full h-full mx-0 rounded-none flex flex-col" : "max-w-3xl w-full mx-4"}`}
+      >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-full">
@@ -124,7 +128,7 @@ export const AIEnhanceModal = ({
           </button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 flex-1 overflow-y-auto">
           <div>
             <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
               Select Tone
@@ -199,45 +203,42 @@ export const AIEnhanceModal = ({
                     {enhancedText}
                   </div>
                 ) : (
-                  <div className="text-zinc-400 dark:text-zinc-500">
-                    Click "Enhance" to generate AI-improved text
+                  <div className="text-zinc-400 italic">
+                    Enhanced text will appear here...
                   </div>
                 )}
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="pt-4 flex gap-3 justify-end border-t border-stone-200 dark:border-zinc-700">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 text-zinc-700 dark:text-zinc-300 hover:bg-stone-100 dark:hover:bg-zinc-800 rounded-lg transition-colors font-medium"
-            >
-              Cancel
-            </button>
-
-            {!isEnhanced ? (
-              <button
-                onClick={handleEnhance}
-                disabled={isLoading || !content}
-                className={`px-4 py-2 rounded-lg transition-colors font-medium flex items-center gap-2 ${
-                  isLoading || !content
-                    ? "bg-zinc-300 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400 cursor-not-allowed"
-                    : "bg-zinc-900 dark:bg-zinc-700 text-white hover:bg-zinc-800 dark:hover:bg-zinc-600"
-                }`}
-              >
-                <Sparkles size={18} />
-                {isLoading ? "Enhancing..." : "Enhance"}
-              </button>
-            ) : (
-              <button
-                onClick={handleApply}
-                className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-lg transition-colors font-medium flex items-center gap-2"
-              >
-                <Check size={18} />
-                Apply Changes
-              </button>
-            )}
-          </div>
+        <div className="mt-6 flex justify-end gap-3">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleEnhance}
+            disabled={
+              isLoading ||
+              !content.trim() ||
+              (selectedTone === "custom" && !customToneInput.trim())
+            }
+            className="px-4 py-2 rounded-lg bg-zinc-900 text-white hover:bg-zinc-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            {isLoading && <Loader2 size={16} className="animate-spin" />}
+            Enhance
+          </button>
+          <button
+            onClick={handleApply}
+            disabled={!isEnhanced}
+            className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            <Check size={16} />
+            Apply Changes
+          </button>
         </div>
       </div>
     </div>
