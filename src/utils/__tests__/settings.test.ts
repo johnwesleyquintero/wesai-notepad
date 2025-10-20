@@ -5,6 +5,7 @@ describe("settingsUtils", () => {
   const MOCK_SETTINGS_KEY = "wesai_settings";
   const mockSettings: AppSettings = {
     geminiApiKey: "test-api-key",
+    useSupabase: false,
   };
 
   beforeEach(() => {

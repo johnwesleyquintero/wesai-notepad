@@ -79,8 +79,8 @@ export const Home = () => {
     [notes, selectedNoteId],
   );
 
-  const handleNewNote = () => {
-    const newNote = saveNote("Untitled", "");
+  const handleNewNote = async () => {
+    const newNote = await saveNote("Untitled", "");
     setSelectedNoteId(newNote.id);
   };
 

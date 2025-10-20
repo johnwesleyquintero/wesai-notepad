@@ -39,7 +39,10 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
     setUseSupabaseSync((prev) => {
       const newSupabaseState = !prev;
       const settings = settingsUtils.getSettings();
-      settingsUtils.saveSettings({ ...settings, useSupabase: newSupabaseState });
+      settingsUtils.saveSettings({
+        ...settings,
+        useSupabase: newSupabaseState,
+      });
       return newSupabaseState;
     });
   };

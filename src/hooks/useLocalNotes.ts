@@ -8,7 +8,9 @@ import { supabase } from "../utils/supabaseClient";
 import { settingsUtils } from "../utils/settings";
 
 export const useLocalNotes = () => {
-  const [useSupabase, setUseSupabase] = useState(settingsUtils.getSettings().useSupabase);
+  const [useSupabase, setUseSupabase] = useState(
+    settingsUtils.getSettings().useSupabase,
+  );
 
   const {
     state: notes,
@@ -22,9 +24,9 @@ export const useLocalNotes = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       if (useSupabase) {
-        const { data, error } = await supabase.from('notes').select('*');
+        const { data, error } = await supabase.from("notes").select("*");
         if (error) {
-          console.error('Error fetching notes from Supabase:', error);
+          console.error("Error fetching notes from Supabase:", error);
           setNotes(storageUtils.getNotes()); // Fallback to local storage
         } else {
           setNotes(data || []);
@@ -34,7 +36,7 @@ export const useLocalNotes = () => {
       }
     };
     fetchNotes();
-  }, [useSupabase]);
+  }, [useSupabase, setNotes]);
 
   const debouncedSaveNotes = useRef(
     debounce(async (updatedNotes: Note[]) => {
@@ -58,23 +60,26 @@ export const useLocalNotes = () => {
     if (notes) {
       debouncedSaveNotes(notes);
     }
-  }, [notes, useSupabase]);
+  }, [notes, useSupabase, debouncedSaveNotes]);
 
   const saveNote = async (title: string, content: string): Promise<Note> => {
     let newNote: Note;
     if (useSupabase) {
-      const { data, error } = await supabase.from('notes').insert({
-        title,
-        content,
-        tags: [],
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        isFavorite: false,
-        isPinned: false,
-      }).select();
+      const { data, error } = await supabase
+        .from("notes")
+        .insert({
+          title,
+          content,
+          tags: [],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          isFavorite: false,
+          isPinned: false,
+        })
+        .select();
 
       if (error) {
-        console.error('Error saving note to Supabase:', error);
+        console.error("Error saving note to Supabase:", error);
         throw error; // Or handle more gracefully
       } else {
         newNote = data[0];
@@ -102,28 +107,33 @@ export const useLocalNotes = () => {
     updates: Partial<Omit<Note, "id" | "createdAt">>,
   ): Promise<void> => {
     if (useSupabase) {
-      const { error } = await supabase.from('notes').update({
-        ...updates,
-        updatedAt: Date.now(),
-      }).eq('id', id);
+      const { error } = await supabase
+        .from("notes")
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", id);
 
       if (error) {
-        console.error('Error updating note in Supabase:', error);
+        console.error("Error updating note in Supabase:", error);
         throw error; // Or handle more gracefully
       }
     }
 
     const updatedNotes = notes.map((note) =>
-      note.id === id ? { ...note, ...updates, updatedAt: Date.now() } : note,
+      note.id === id
+        ? { ...note, ...updates, updated_at: new Date().toISOString() }
+        : note,
     );
     setNotes(updatedNotes);
   };
 
   const deleteNote = async (id: string): Promise<void> => {
     if (useSupabase) {
-      const { error } = await supabase.from('notes').delete().eq('id', id);
+      const { error } = await supabase.from("notes").delete().eq("id", id);
       if (error) {
-        console.error('Error deleting note from Supabase:', error);
+        console.error("Error deleting note from Supabase:", error);
         throw error; // Or handle more gracefully
       }
     }
