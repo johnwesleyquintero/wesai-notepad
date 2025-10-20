@@ -12,6 +12,7 @@ interface NoteEditorProps {
   onRedo: () => void;
   canUndo: boolean;
   canRedo: boolean;
+  onBack: () => void;
 }
 
 export const NoteEditor = ({
@@ -22,6 +23,7 @@ export const NoteEditor = ({
   onRedo,
   canUndo,
   canRedo,
+  onBack,
 }: NoteEditorProps) => {
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
@@ -81,6 +83,7 @@ export const NoteEditor = ({
         onRedo={onRedo}
         canUndo={canUndo}
         canRedo={canRedo}
+        onBack={onBack} // Pass the onBack prop to Toolbar
       />
 
       <input
@@ -88,7 +91,7 @@ export const NoteEditor = ({
         value={title}
         onChange={(e) => handleTitleChange(e.target.value)}
         placeholder="Note title..."
-        className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 bg-transparent border-none outline-none px-8 py-6 placeholder:text-zinc-300 dark:placeholder:text-zinc-600"
+        className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 bg-transparent border-none outline-none px-4 sm:px-8 py-6 placeholder:text-zinc-300 dark:placeholder:text-zinc-600"
       />
 
       <CategorySelector
@@ -102,7 +105,7 @@ export const NoteEditor = ({
         value={content}
         onChange={(e) => handleContentChange(e.target.value)}
         placeholder="Start writing..."
-        className="flex-1 text-base text-zinc-700 dark:text-zinc-300 bg-transparent border-none outline-none px-8 py-4 resize-none placeholder:text-zinc-300 dark:placeholder:text-zinc-600 leading-relaxed"
+        className="flex-1 text-base text-zinc-700 dark:text-zinc-300 bg-transparent border-none outline-none px-4 sm:px-8 py-4 resize-none placeholder:text-zinc-300 dark:placeholder:text-zinc-600 leading-relaxed"
       />
     </div>
   );

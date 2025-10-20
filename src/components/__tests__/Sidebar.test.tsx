@@ -11,6 +11,8 @@ describe("Sidebar", () => {
         onFilterChange={() => {}}
         onNewNote={() => {}}
         onOpenSettings={() => {}}
+        isOpen={true}
+        onClose={() => {}}
       />,
     );
     expect(screen.getByText("WesAI Notepad")).toBeInTheDocument();
@@ -28,6 +30,8 @@ describe("Sidebar", () => {
         onFilterChange={() => {}}
         onNewNote={handleNewNote}
         onOpenSettings={() => {}}
+        isOpen={true}
+        onClose={() => {}}
       />,
     );
     fireEvent.click(screen.getByText("New Note"));
@@ -42,6 +46,8 @@ describe("Sidebar", () => {
         onFilterChange={handleFilterChange}
         onNewNote={() => {}}
         onOpenSettings={() => {}}
+        isOpen={true}
+        onClose={() => {}}
       />,
     );
     fireEvent.click(screen.getByText("Favorites"));
@@ -56,6 +62,8 @@ describe("Sidebar", () => {
         onFilterChange={() => {}}
         onNewNote={() => {}}
         onOpenSettings={handleOpenSettings}
+        isOpen={true}
+        onClose={() => {}}
       />,
     );
     fireEvent.click(screen.getByText("Settings"));
@@ -69,6 +77,8 @@ describe("Sidebar", () => {
         onFilterChange={() => {}}
         onNewNote={() => {}}
         onOpenSettings={() => {}}
+        isOpen={true}
+        onClose={() => {}}
       />,
     );
     const allNotesButton = screen.getByText("All Notes");

@@ -50,7 +50,7 @@ export const NoteCard = ({
         <h3 className="font-semibold text-zinc-900 flex-1 truncate">
           {note.title || "Untitled"}
         </h3>
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1 opacity-100 group-hover:opacity-100 transition-opacity sm:opacity-0">
           <button
             onClick={(e) => {
               e.stopPropagation();

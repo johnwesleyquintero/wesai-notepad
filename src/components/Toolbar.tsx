@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Sparkles, Check, Loader2, Undo, Redo } from "lucide-react";
+import {
+  Sparkles,
+  Check,
+  Loader2,
+  Undo,
+  Redo,
+  ChevronLeft,
+} from "lucide-react";
 import { AIEnhanceModal } from "./AIEnhanceModal";
 
 interface ToolbarProps {
@@ -10,6 +17,7 @@ interface ToolbarProps {
   onRedo: () => void;
   canUndo: boolean;
   canRedo: boolean;
+  onBack: () => void;
 }
 
 export const Toolbar = ({
@@ -20,18 +28,25 @@ export const Toolbar = ({
   onRedo,
   canUndo,
   canRedo,
+  onBack,
 }: ToolbarProps) => {
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
 
   return (
-    <div className="border-b border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-8 py-4 flex items-center justify-between">
+    <div className="border-b border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 sm:px-8 py-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
+        <button
+          onClick={onBack}
+          className="lg:hidden p-2 rounded-lg text-zinc-700 hover:bg-stone-100 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors"
+        >
+          <ChevronLeft size={20} />
+        </button>
         <button
           onClick={() => setIsAIModalOpen(true)}
           className="flex items-center gap-2 px-4 py-2 bg-zinc-900 dark:bg-zinc-700 text-white rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-600 transition-colors"
         >
           <Sparkles size={18} />
-          <span className="font-medium">AI Enhance</span>
+          <span className="font-medium hidden sm:inline">AI Enhance</span>
         </button>
         <button
           onClick={onUndo}

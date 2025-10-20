@@ -1,4 +1,4 @@
-import { Plus, Clock, Star, FileText, Settings } from "lucide-react";
+import { Plus, Clock, Star, FileText, Settings, X } from "lucide-react";
 import { NoteFilter, NoteFilters } from "../types/note";
 
 interface SidebarProps {
@@ -6,6 +6,8 @@ interface SidebarProps {
   onFilterChange: (filter: NoteFilter) => void;
   onNewNote: () => void;
   onOpenSettings: () => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export const Sidebar = ({
@@ -13,6 +15,8 @@ export const Sidebar = ({
   onFilterChange,
   onNewNote,
   onOpenSettings,
+  isOpen,
+  onClose,
 }: SidebarProps) => {
   const navItems: { id: NoteFilter; label: string; icon: typeof Clock }[] = [
     { id: NoteFilters.RECENT, label: "Recent", icon: Clock },
@@ -21,10 +25,14 @@ export const Sidebar = ({
   ];
 
   return (
-    <aside className="w-64 bg-stone-50 border-r border-stone-200 flex flex-col h-screen">
-      <div className="p-6 border-b border-stone-200">
+    <aside
+      className={`w-64 bg-stone-50 border-r border-stone-200 flex flex-col h-screen lg:static lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out`}
+    >
+      <div className="p-6 border-b border-stone-200 flex items-center justify-between">
         <h1 className="text-xl font-semibold text-zinc-900">WesAI Notepad</h1>
-        <p className="text-sm text-zinc-500 mt-1">v0.1</p>
+        <button onClick={onClose} className="lg:hidden text-stone-600">
+          <X size={24} />
+        </button>
       </div>
 
       <div className="p-4">

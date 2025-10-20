@@ -32,6 +32,7 @@ describe("NoteEditor", () => {
         onRedo={() => {}}
         canUndo={false}
         canRedo={false}
+        onBack={() => {}}
       />,
     );
     expect(screen.getByPlaceholderText("Note title...")).toHaveValue(
@@ -53,6 +54,7 @@ describe("NoteEditor", () => {
         onRedo={() => {}}
         canUndo={false}
         canRedo={false}
+        onBack={() => {}}
       />,
     );
 
@@ -80,6 +82,7 @@ describe("NoteEditor", () => {
         onRedo={() => {}}
         canUndo={false}
         canRedo={false}
+        onBack={() => {}}
       />,
     );
 
@@ -109,9 +112,9 @@ describe("NoteEditor", () => {
         onRedo={() => {}}
         canUndo={false}
         canRedo={false}
+        onBack={() => {}}
       />,
     );
-
     const titleInput = screen.getByPlaceholderText("Note title...");
     fireEvent.change(titleInput, { target: { value: "New Title" } });
 
