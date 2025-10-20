@@ -93,16 +93,10 @@ export const NoteEditor = ({
   const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCurrentTagInput(value);
-
-    // If a comma or space is entered, add the tag
-    if (value.endsWith(",") || value.endsWith(" ")) {
-      const tagToAdd = value.slice(0, -1);
-      addTag(tagToAdd);
-    }
   };
 
   const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && currentTagInput.trim() !== "") {
       e.preventDefault(); // Prevent form submission
       addTag(currentTagInput);
     }
