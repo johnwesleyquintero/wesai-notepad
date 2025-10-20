@@ -10,7 +10,8 @@ const mockNote: Note = {
   createdAt: Date.now(),
   updatedAt: Date.now(),
   isFavorite: false,
-  categories: ["test", "jest"],
+  tags: ["test", "jest"],
+  isPinned: false,
 };
 
 describe("NoteEditor", () => {
@@ -68,6 +69,8 @@ describe("NoteEditor", () => {
     expect(handleUpdate).toHaveBeenCalledWith("1", {
       title: "New Title",
       content: "This is a test note.",
+      tags: ["test", "jest"],
+      isPinned: false,
     });
   });
 
@@ -98,6 +101,8 @@ describe("NoteEditor", () => {
     expect(handleUpdate).toHaveBeenCalledWith("1", {
       title: "Test Note",
       content: "New Content",
+      tags: ["test", "jest"],
+      isPinned: false,
     });
   });
 

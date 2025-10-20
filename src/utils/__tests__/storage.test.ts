@@ -15,7 +15,8 @@ describe("storageUtils", () => {
         createdAt: 1,
         updatedAt: 1,
         isFavorite: false,
-        categories: [],
+        tags: [],
+        isPinned: false,
       },
       {
         id: "2",
@@ -24,7 +25,8 @@ describe("storageUtils", () => {
         createdAt: 2,
         updatedAt: 2,
         isFavorite: true,
-        categories: ["work"],
+        tags: ["work"],
+        isPinned: false,
       },
     ];
   });

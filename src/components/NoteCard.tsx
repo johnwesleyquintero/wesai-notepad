@@ -1,4 +1,4 @@
-import { Star, Trash2, Tag } from "lucide-react";
+import { Pin, Star, Trash2 } from "lucide-react";
 import { Note } from "../types/note";
 
 interface NoteCardProps {
@@ -7,6 +7,7 @@ interface NoteCardProps {
   onClick: () => void;
   onDelete: () => void;
   onToggleFavorite: () => void;
+  onTogglePin: () => void;
 }
 
 export const NoteCard = ({
@@ -15,6 +16,7 @@ export const NoteCard = ({
   onClick,
   onDelete,
   onToggleFavorite,
+  onTogglePin,
 }: NoteCardProps) => {
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -65,6 +67,17 @@ export const NoteCard = ({
           <button
             onClick={(e) => {
               e.stopPropagation();
+              onTogglePin();
+            }}
+            className={`p-1.5 rounded hover:bg-stone-100 transition-colors ${
+              note.isPinned ? "text-blue-500" : "text-zinc-400"
+            }`}
+          >
+            <Pin size={16} fill={note.isPinned ? "currentColor" : "none"} />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
               onDelete();
             }}
             className="p-1.5 rounded hover:bg-red-50 text-zinc-400 hover:text-red-600 transition-colors"
@@ -84,20 +97,20 @@ export const NoteCard = ({
         {note.isFavorite && (
           <Star size={12} fill="currentColor" className="text-yellow-500" />
         )}
+        {note.isPinned && (
+          <Pin size={12} fill="currentColor" className="text-blue-500" />
+        )}
       </div>
 
-      {note.categories && note.categories.length > 0 && (
+      {note.tags && note.tags.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-2">
-          {note.categories.map((category) => (
-            <div
-              key={category}
-              className="flex items-center gap-1 px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-700 rounded text-xs"
+          {note.tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs rounded-full"
             >
-              <Tag size={10} className="text-zinc-500 dark:text-zinc-400" />
-              <span className="text-zinc-600 dark:text-zinc-300">
-                {category}
-              </span>
-            </div>
+              {tag}
+            </span>
           ))}
         </div>
       )}

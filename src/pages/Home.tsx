@@ -21,9 +21,10 @@ export const Home = () => {
   const {
     notes,
     saveNote,
-    updateNote,
     deleteNote,
+    updateNote,
     toggleFavorite,
+    togglePin,
     undo,
     redo,
     canUndo,
@@ -44,6 +45,9 @@ export const Home = () => {
   const filteredNotes = useMemo(() => {
     let filtered = [...notes];
 
+    // Sort by pinned status first
+    filtered.sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
+
     // Apply filter
     if (currentFilter === NoteFilters.FAVORITES) {
       filtered = filtered.filter((note) => note.isFavorite);
@@ -61,7 +65,8 @@ export const Home = () => {
       filtered = filtered.filter(
         (note) =>
           note.title.toLowerCase().includes(query) ||
-          note.content.toLowerCase().includes(query),
+          note.content.toLowerCase().includes(query) ||
+          note.tags.some((tag) => tag.toLowerCase().includes(query)),
       );
     }
 
@@ -185,6 +190,7 @@ export const Home = () => {
                         onClick={() => setSelectedNoteId(note.id)}
                         onDelete={() => handleDeleteClick(note)}
                         onToggleFavorite={() => toggleFavorite(note.id)}
+                        onTogglePin={() => togglePin(note.id)}
                       />
                     ))
                   )}

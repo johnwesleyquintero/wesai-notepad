@@ -5,13 +5,18 @@ export interface Note {
   createdAt: number;
   updatedAt: number;
   isFavorite: boolean;
-  categories?: string[];
+  tags: string[];
+  isPinned: boolean;
+}
+
+export enum NoteFilter {
+  ALL = "all",
+  RECENT = "recent",
+  FAVORITES = "favorites",
 }
 
 export const NoteFilters = {
-  ALL: "all",
-  RECENT: "recent",
-  FAVORITES: "favorites",
-} as const;
-
-export type NoteFilter = (typeof NoteFilters)[keyof typeof NoteFilters];
+  ALL: NoteFilter.ALL,
+  RECENT: NoteFilter.RECENT,
+  FAVORITES: NoteFilter.FAVORITES,
+};

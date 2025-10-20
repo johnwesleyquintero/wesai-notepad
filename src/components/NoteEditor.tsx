@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { Note } from "../types/note";
-import { CategorySelector } from "./CategorySelector";
 import { Toolbar } from "./Toolbar";
 import { DEBOUNCE_DELAY_NOTE_EDITOR } from "../utils/constants";
 
@@ -27,15 +26,21 @@ export const NoteEditor = ({
 }: NoteEditorProps) => {
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
+  const [tags, setTags] = useState<string[]>(note.tags || []);
   const [isSaving, setIsSaving] = useState(false);
   const saveTimeoutRef = useRef<number>();
 
   useEffect(() => {
     setTitle(note.title);
     setContent(note.content);
-  }, [note.id, note.title, note.content]);
+    setTags(note.tags || []);
+  }, [note.id, note.title, note.content, note.tags]);
 
-  const handleUpdate = (newTitle: string, newContent: string) => {
+  const handleUpdate = (
+    newTitle: string,
+    newContent: string,
+    newTags: string[],
+  ) => {
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
@@ -44,7 +49,11 @@ export const NoteEditor = ({
     onSaveStateChange(true);
 
     saveTimeoutRef.current = setTimeout(() => {
-      onUpdate(note.id, { title: newTitle, content: newContent });
+      onUpdate(note.id, {
+        title: newTitle,
+        content: newContent,
+        tags: newTags,
+      });
       setIsSaving(false);
       onSaveStateChange(false);
     }, DEBOUNCE_DELAY_NOTE_EDITOR);
@@ -52,17 +61,23 @@ export const NoteEditor = ({
 
   const handleTitleChange = (newTitle: string) => {
     setTitle(newTitle);
-    handleUpdate(newTitle, content);
+    handleUpdate(newTitle, content, tags);
   };
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
-    handleUpdate(title, newContent);
+    handleUpdate(title, newContent, tags);
+  };
+
+  const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTags = e.target.value.split(/[,\s]+/).filter(Boolean);
+    setTags(newTags);
+    handleUpdate(title, content, newTags);
   };
 
   const handleUpdateContent = (newContent: string) => {
     setContent(newContent);
-    handleUpdate(title, newContent);
+    handleUpdate(title, newContent, tags);
   };
 
   useEffect(() => {
@@ -83,7 +98,7 @@ export const NoteEditor = ({
         onRedo={onRedo}
         canUndo={canUndo}
         canRedo={canRedo}
-        onBack={onBack} // Pass the onBack prop to Toolbar
+        onBack={onBack}
       />
 
       <input
@@ -94,12 +109,24 @@ export const NoteEditor = ({
         className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 bg-transparent border-none outline-none px-4 sm:px-8 py-6 placeholder:text-zinc-300 dark:placeholder:text-zinc-600"
       />
 
-      <CategorySelector
-        categories={note.categories || []}
-        onChange={(categories) => {
-          onUpdate(note.id, { categories });
-        }}
+      <input
+        type="text"
+        value={tags.join(", ")}
+        onChange={handleTagsChange}
+        placeholder="Tags (comma separated)"
+        className="text-sm text-zinc-700 dark:text-zinc-300 bg-transparent border-none outline-none px-4 sm:px-8 pb-2 placeholder:text-zinc-300 dark:placeholder:text-zinc-600"
       />
+
+      <div className="flex flex-wrap gap-2 px-4 sm:px-8 pb-4">
+        {tags.map((tag, index) => (
+          <span
+            key={index}
+            className="bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs px-2 py-1 rounded-full"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
 
       <textarea
         value={content}

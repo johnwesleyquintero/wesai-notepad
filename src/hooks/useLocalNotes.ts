@@ -35,10 +35,11 @@ export const useLocalNotes = () => {
       id: storageUtils.generateId(),
       title,
       content,
+      tags: [],
       createdAt: Date.now(),
       updatedAt: Date.now(),
       isFavorite: false,
-      categories: [],
+      isPinned: false,
     };
 
     const updatedNotes = [newNote, ...notes];
@@ -68,12 +69,20 @@ export const useLocalNotes = () => {
     }
   };
 
+  const togglePin = (id: string): void => {
+    const note = notes.find((n) => n.id === id);
+    if (note) {
+      updateNote(id, { isPinned: !note.isPinned });
+    }
+  };
+
   return {
     notes,
     saveNote,
     updateNote,
     deleteNote,
     toggleFavorite,
+    togglePin,
     undo,
     redo,
     canUndo,

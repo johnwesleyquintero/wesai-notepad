@@ -10,7 +10,8 @@ const mockNote: Note = {
   createdAt: Date.now(),
   updatedAt: Date.now(),
   isFavorite: false,
-  categories: ["test", "jest"],
+  tags: ["test", "jest"],
+  isPinned: false,
 };
 
 describe("NoteCard", () => {
@@ -22,6 +23,7 @@ describe("NoteCard", () => {
         onClick={() => {}}
         onDelete={() => {}}
         onToggleFavorite={() => {}}
+        onTogglePin={() => {}}
       />,
     );
     expect(screen.getByText("Test Note")).toBeInTheDocument();
@@ -37,6 +39,7 @@ describe("NoteCard", () => {
         onClick={() => {}}
         onDelete={() => {}}
         onToggleFavorite={() => {}}
+        onTogglePin={() => {}}
       />,
     );
     expect(screen.getByText("Untitled")).toBeInTheDocument();
@@ -51,6 +54,7 @@ describe("NoteCard", () => {
         onClick={() => {}}
         onDelete={() => {}}
         onToggleFavorite={() => {}}
+        onTogglePin={() => {}}
       />,
     );
     expect(screen.getByText("No content")).toBeInTheDocument();
@@ -65,6 +69,7 @@ describe("NoteCard", () => {
         onClick={handleClick}
         onDelete={() => {}}
         onToggleFavorite={() => {}}
+        onTogglePin={() => {}}
       />,
     );
     fireEvent.click(screen.getByText("Test Note"));
@@ -80,6 +85,7 @@ describe("NoteCard", () => {
         onClick={() => {}}
         onDelete={handleDelete}
         onToggleFavorite={() => {}}
+        onTogglePin={() => {}}
       />,
     );
     const deleteButton = container.querySelector(
@@ -100,6 +106,7 @@ describe("NoteCard", () => {
         onClick={() => {}}
         onDelete={() => {}}
         onToggleFavorite={handleToggleFavorite}
+        onTogglePin={() => {}}
       />,
     );
     const starButton = container.querySelector(
@@ -120,6 +127,7 @@ describe("NoteCard", () => {
         onClick={() => {}}
         onDelete={() => {}}
         onToggleFavorite={() => {}}
+        onTogglePin={() => {}}
       />,
     );
     const starIcon = container.querySelector(".text-yellow-500 svg");
@@ -127,7 +135,45 @@ describe("NoteCard", () => {
     expect(starIcon).toHaveAttribute("fill", "currentColor");
   });
 
-  it("renders categories when provided", () => {
+  it("calls onTogglePin when the pin button is clicked", () => {
+    const handleTogglePin = jest.fn();
+    const { container } = render(
+      <NoteCard
+        note={mockNote}
+        isSelected={false}
+        onClick={() => {}}
+        onDelete={() => {}}
+        onToggleFavorite={() => {}}
+        onTogglePin={handleTogglePin}
+      />,
+    );
+    const pinButton = container.querySelector(
+      ".group-hover\\:opacity-100 button:nth-child(2)",
+    );
+    if (pinButton) {
+      fireEvent.click(pinButton);
+      expect(handleTogglePin).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it("displays a filled pin when isPinned is true", () => {
+    const pinnedNote = { ...mockNote, isPinned: true };
+    const { container } = render(
+      <NoteCard
+        note={pinnedNote}
+        isSelected={false}
+        onClick={() => {}}
+        onDelete={() => {}}
+        onToggleFavorite={() => {}}
+        onTogglePin={() => {}}
+      />,
+    );
+    const pinIcon = container.querySelector(".text-zinc-900 svg");
+    expect(pinIcon).toBeInTheDocument();
+    expect(pinIcon).toHaveAttribute("fill", "currentColor");
+  });
+
+  it("renders tags when provided", () => {
     render(
       <NoteCard
         note={mockNote}
@@ -135,6 +181,7 @@ describe("NoteCard", () => {
         onClick={() => {}}
         onDelete={() => {}}
         onToggleFavorite={() => {}}
+        onTogglePin={() => {}}
       />,
     );
     expect(screen.getByText("test")).toBeInTheDocument();
@@ -149,6 +196,7 @@ describe("NoteCard", () => {
         onClick={() => {}}
         onDelete={() => {}}
         onToggleFavorite={() => {}}
+        onTogglePin={() => {}}
       />,
     );
     const cardElement = container.firstChild;

@@ -29,7 +29,8 @@ describe("useLocalNotes", () => {
         createdAt: 1,
         updatedAt: 1,
         isFavorite: false,
-        categories: [],
+        tags: [],
+        isPinned: false,
       },
       {
         id: "2",
@@ -38,7 +39,8 @@ describe("useLocalNotes", () => {
         createdAt: 2,
         updatedAt: 2,
         isFavorite: true,
-        categories: ["work"],
+        tags: ["work"],
+        isPinned: false,
       },
     ];
     (storageUtils.getNotes as jest.Mock).mockReturnValue(mockInitialNotes);
@@ -67,6 +69,8 @@ describe("useLocalNotes", () => {
     expect(result.current.notes.length).toBe(mockInitialNotes.length + 1);
     expect(savedNote?.title).toBe(newNoteTitle);
     expect(savedNote?.content).toBe(newNoteContent);
+    expect(savedNote?.tags).toEqual([]);
+    expect(savedNote?.isPinned).toBe(false);
     expect(storageUtils.saveNotes).toHaveBeenCalledTimes(1);
     expect(storageUtils.saveNotes).toHaveBeenCalledWith(result.current.notes);
   });
@@ -125,6 +129,34 @@ describe("useLocalNotes", () => {
     const { result } = renderHook(() => useLocalNotes());
     act(() => {
       result.current.toggleFavorite("non-existent-id");
+    });
+    expect(storageUtils.saveNotes).not.toHaveBeenCalled();
+  });
+
+  it("should toggle pin status of a note", () => {
+    const { result } = renderHook(() => useLocalNotes());
+
+    act(() => {
+      result.current.togglePin("1");
+    });
+    expect(result.current.notes.find((note) => note.id === "1")?.isPinned).toBe(
+      true,
+    );
+    expect(storageUtils.saveNotes).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      result.current.togglePin("1");
+    });
+    expect(result.current.notes.find((note) => note.id === "1")?.isPinned).toBe(
+      false,
+    );
+    expect(storageUtils.saveNotes).toHaveBeenCalledTimes(2);
+  });
+
+  it("should not toggle pin if note not found", () => {
+    const { result } = renderHook(() => useLocalNotes());
+    act(() => {
+      result.current.togglePin("non-existent-id");
     });
     expect(storageUtils.saveNotes).not.toHaveBeenCalled();
   });
