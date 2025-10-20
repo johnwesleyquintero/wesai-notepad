@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Sparkles,
   Check,
@@ -7,31 +6,26 @@ import {
   Redo,
   ChevronLeft,
 } from "lucide-react";
-import { AIEnhanceModal } from "./AIEnhanceModal";
 
 interface ToolbarProps {
   isSaving: boolean;
-  content: string;
-  onUpdateContent: (newContent: string) => void;
   onUndo: () => void;
   onRedo: () => void;
   canUndo: boolean;
   canRedo: boolean;
   onBack: () => void;
+  onOpenAIEnhanceModal: () => void;
 }
 
 export const Toolbar = ({
   isSaving,
-  content,
-  onUpdateContent,
   onUndo,
   onRedo,
   canUndo,
   canRedo,
   onBack,
+  onOpenAIEnhanceModal,
 }: ToolbarProps) => {
-  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
-
   return (
     <div className="border-b border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 sm:px-8 py-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -42,7 +36,7 @@ export const Toolbar = ({
           <ChevronLeft size={20} />
         </button>
         <button
-          onClick={() => setIsAIModalOpen(true)}
+          onClick={onOpenAIEnhanceModal}
           className="flex items-center gap-2 px-4 py-2 bg-zinc-900 dark:bg-zinc-700 text-white rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-600 transition-colors"
         >
           <Sparkles size={18} />
@@ -72,26 +66,19 @@ export const Toolbar = ({
         </button>
       </div>
 
-      <div className="flex items-center gap-2 text-sm">
-        {isSaving ? (
-          <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
-            <Loader2 size={16} className="animate-spin" />
-            <span>Saving...</span>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-            <Check size={16} />
-            <span>Saved</span>
-          </div>
+      <div className="flex items-center gap-3">
+        {isSaving && (
+          <Loader2
+            size={18}
+            className="animate-spin text-zinc-500 dark:text-zinc-400"
+          />
+        )}
+        {!isSaving && (
+          <span className="text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
+            <Check size={18} /> Saved
+          </span>
         )}
       </div>
-
-      <AIEnhanceModal
-        isOpen={isAIModalOpen}
-        onClose={() => setIsAIModalOpen(false)}
-        content={content}
-        onApplyChanges={onUpdateContent}
-      />
     </div>
   );
 };

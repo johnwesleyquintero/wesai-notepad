@@ -23,9 +23,9 @@ export const geminiApi = {
       }
 
       const prompt = `
-        Enhance the following text to make it more ${tone}. 
-        Maintain the original meaning but improve clarity, flow, and impact.
-        
+        Enhance the following text to be more ${tone}.
+        Improve clarity, flow, and impact while preserving original meaning and Markdown formatting.
+
         Original text:
         ${text}
       `;

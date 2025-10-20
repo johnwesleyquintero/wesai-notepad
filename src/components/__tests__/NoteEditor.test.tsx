@@ -34,6 +34,9 @@ describe("NoteEditor", () => {
         canUndo={false}
         canRedo={false}
         onBack={() => {}}
+        onOpenAIEnhanceModal={() => {}}
+        isAIEnhanceModalOpen={false}
+        onCloseAIEnhanceModal={() => {}}
       />,
     );
     expect(screen.getByPlaceholderText("Note title...")).toHaveValue(
@@ -56,6 +59,9 @@ describe("NoteEditor", () => {
         canUndo={false}
         canRedo={false}
         onBack={() => {}}
+        onOpenAIEnhanceModal={() => {}}
+        isAIEnhanceModalOpen={false}
+        onCloseAIEnhanceModal={() => {}}
       />,
     );
 
@@ -86,6 +92,9 @@ describe("NoteEditor", () => {
         canUndo={false}
         canRedo={false}
         onBack={() => {}}
+        onOpenAIEnhanceModal={() => {}}
+        isAIEnhanceModalOpen={false}
+        onCloseAIEnhanceModal={() => {}}
       />,
     );
 
@@ -118,6 +127,9 @@ describe("NoteEditor", () => {
         canUndo={false}
         canRedo={false}
         onBack={() => {}}
+        onOpenAIEnhanceModal={() => {}}
+        isAIEnhanceModalOpen={false}
+        onCloseAIEnhanceModal={() => {}}
       />,
     );
     const titleInput = screen.getByPlaceholderText("Note title...");

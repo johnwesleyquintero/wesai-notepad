@@ -6,8 +6,8 @@ import useMobile from "../hooks/useMobile";
 interface AIEnhanceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  content: string;
-  onApplyChanges: (enhancedText: string) => void;
+  content: string; // This will be markdown content
+  onApplyChanges: (enhancedMarkdown: string) => void;
 }
 
 type ToneOption = {

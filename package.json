@@ -14,10 +14,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@lexical/react": "^0.37.0",
     "@supabase/supabase-js": "^2.57.4",
+    "lexical": "^0.37.0",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-slite": "^0.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

@@ -38,6 +38,7 @@ export const Home = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState<Note | null>(null);
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
+  const [isAIEnhanceModalOpen, setIsAIEnhanceModalOpen] = useState(false); // State for AI Enhance modal
   const [showSidebar, setShowSidebar] = useState(false);
 
   const isMobile = useMobile();
@@ -214,6 +215,9 @@ export const Home = () => {
                 canUndo={canUndo}
                 canRedo={canRedo}
                 onBack={() => setSelectedNoteId(null)}
+                onOpenAIEnhanceModal={() => setIsAIEnhanceModalOpen(true)}
+                isAIEnhanceModalOpen={isAIEnhanceModalOpen}
+                onCloseAIEnhanceModal={() => setIsAIEnhanceModalOpen(false)}
               />
             ) : (
               <div className="flex-1 flex items-center justify-center text-zinc-400">

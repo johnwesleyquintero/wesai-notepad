@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.slite-container {
+  @apply flex-1 text-base text-zinc-700 dark:text-zinc-300 bg-transparent border-none outline-none px-4 sm:px-8 py-4 resize-none placeholder:text-zinc-300 dark:placeholder:text-zinc-600 leading-relaxed;
+}
+
+.editor-placeholder {
+  @apply text-zinc-300 dark:text-zinc-600;
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.slite-container .editor-text-content {
+  min-height: 150px;
+  outline: none;
+}

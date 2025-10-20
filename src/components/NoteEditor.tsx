@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Note } from "../types/note";
-import { Toolbar } from "./Toolbar";
+import { Toolbar as NoteToolbar } from "./Toolbar";
 import { DEBOUNCE_DELAY_NOTE_EDITOR } from "../utils/constants";
+import Slite, { Toolbar, Editor } from "react-slite";
+import { AIEnhanceModal } from "./AIEnhanceModal";
 
 interface NoteEditorProps {
   note: Note;
@@ -12,6 +14,9 @@ interface NoteEditorProps {
   canUndo: boolean;
   canRedo: boolean;
   onBack: () => void;
+  onOpenAIEnhanceModal: () => void;
+  isAIEnhanceModalOpen: boolean;
+  onCloseAIEnhanceModal: () => void;
 }
 
 export const NoteEditor = ({
@@ -23,10 +28,14 @@ export const NoteEditor = ({
   canUndo,
   canRedo,
   onBack,
+  onOpenAIEnhanceModal,
+  isAIEnhanceModalOpen,
+  onCloseAIEnhanceModal,
 }: NoteEditorProps) => {
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
   const [tags, setTags] = useState<string[]>(note.tags || []);
+  const [currentTagInput, setCurrentTagInput] = useState(""); // New state for current tag input
   const [isSaving, setIsSaving] = useState(false);
   const saveTimeoutRef = useRef<number>();
 
@@ -34,6 +43,7 @@ export const NoteEditor = ({
     setTitle(note.title);
     setContent(note.content);
     setTags(note.tags || []);
+    setCurrentTagInput(""); // Clear current tag input when note changes
   }, [note.id, note.title, note.content, note.tags]);
 
   const handleUpdate = (
@@ -65,23 +75,53 @@ export const NoteEditor = ({
     handleUpdate(newTitle, content, tags);
   };
 
-  const handleContentChange = (newContent: string) => {
-    setContent(newContent);
-    handleUpdate(title, newContent, tags);
+  const handleContentChange = (currentMarkdown: string) => {
+    setContent(currentMarkdown);
+    handleUpdate(title, currentMarkdown, tags);
   };
 
-  const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTags = e.target.value
-      .split(/[,\s]+/)
-      .map((tag) => tag.trim())
-      .filter(Boolean);
+  const addTag = (tagText: string) => {
+    const trimmedTag = tagText.trim();
+    if (trimmedTag && !tags.includes(trimmedTag)) {
+      const newTags = [...tags, trimmedTag];
+      setTags(newTags);
+      handleUpdate(title, content, newTags);
+    }
+    setCurrentTagInput(""); // Clear input after adding tag
+  };
+
+  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCurrentTagInput(value);
+
+    // If a comma or space is entered, add the tag
+    if (value.endsWith(",") || value.endsWith(" ")) {
+      const tagToAdd = value.slice(0, -1);
+      addTag(tagToAdd);
+    }
+  };
+
+  const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent form submission
+      addTag(currentTagInput);
+    }
+    // Handle backspace to remove last tag if input is empty
+    if (e.key === "Backspace" && currentTagInput === "" && tags.length > 0) {
+      const newTags = tags.slice(0, -1);
+      setTags(newTags);
+      handleUpdate(title, content, newTags);
+    }
+  };
+
+  const handleTagInputBlur = () => {
+    addTag(currentTagInput); // Add tag when input loses focus
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    const newTags = tags.filter((tag) => tag !== tagToRemove);
     setTags(newTags);
     handleUpdate(title, content, newTags);
-  };
-
-  const handleUpdateContent = (newContent: string) => {
-    setContent(newContent);
-    handleUpdate(title, newContent, tags);
   };
 
   useEffect(() => {
@@ -92,17 +132,21 @@ export const NoteEditor = ({
     };
   }, []);
 
+  const handleApplyEnhancedContent = (enhancedMarkdown: string) => {
+    setContent(enhancedMarkdown);
+    handleUpdate(title, enhancedMarkdown, tags);
+  };
+
   return (
     <div className="flex-1 flex flex-col h-full">
-      <Toolbar
+      <NoteToolbar
         isSaving={isSaving}
-        content={content}
-        onUpdateContent={handleUpdateContent}
         onUndo={onUndo}
         onRedo={onRedo}
         canUndo={canUndo}
         canRedo={canRedo}
         onBack={onBack}
+        onOpenAIEnhanceModal={onOpenAIEnhanceModal}
       />
 
       <input
@@ -113,30 +157,49 @@ export const NoteEditor = ({
         className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 bg-transparent border-none outline-none px-4 sm:px-8 py-6 placeholder:text-zinc-300 dark:placeholder:text-zinc-600"
       />
 
-      <input
-        type="text"
-        value={tags.join(", ")}
-        onChange={handleTagsChange}
-        placeholder="Tags (comma separated)"
-        className="text-sm text-zinc-700 dark:text-zinc-300 bg-transparent border-none outline-none px-4 sm:px-8 pb-2 placeholder:text-zinc-300 dark:placeholder:text-zinc-600"
-      />
-
-      <div className="flex flex-wrap gap-2 px-4 sm:px-8 pb-4">
+      <div className="flex flex-wrap gap-2 px-4 sm:px-8 pb-2">
         {tags.map((tag, index) => (
           <span
             key={index}
-            className="bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs px-2 py-1 rounded-full"
+            className="bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs px-2 py-1 rounded-full flex items-center"
           >
             {tag}
+            <button
+              onClick={() => removeTag(tag)}
+              className="ml-1 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 focus:outline-none"
+            >
+              &times;
+            </button>
           </span>
         ))}
+        <input
+          type="text"
+          value={currentTagInput}
+          onChange={handleTagInputChange}
+          onKeyDown={handleTagInputKeyDown}
+          onBlur={handleTagInputBlur}
+          placeholder="Add tags..."
+          className="flex-grow text-sm text-zinc-700 dark:text-zinc-300 bg-transparent border-none outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-600"
+          style={{ minWidth: "80px" }} // Ensure input is visible
+        />
       </div>
 
-      <textarea
-        value={content}
-        onChange={(e) => handleContentChange(e.target.value)}
-        placeholder="Start writing..."
-        className="flex-1 text-base text-zinc-700 dark:text-zinc-300 bg-transparent border-none outline-none px-4 sm:px-8 py-4 resize-none placeholder:text-zinc-300 dark:placeholder:text-zinc-600 leading-relaxed"
+      <div className="flex-1 overflow-y-auto">
+        <Slite
+          initialValue={content}
+          onChange={handleContentChange}
+          readOnly={false}
+        >
+          <Toolbar />
+          <Editor />
+        </Slite>
+      </div>
+
+      <AIEnhanceModal
+        isOpen={isAIEnhanceModalOpen}
+        onClose={onCloseAIEnhanceModal}
+        content={content}
+        onApplyChanges={handleApplyEnhancedContent}
       />
     </div>
   );
