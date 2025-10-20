@@ -37,7 +37,10 @@ export const Sidebar = ({
 
       <div className="p-4">
         <button
-          onClick={onNewNote}
+          onClick={() => {
+            onNewNote();
+            onClose();
+          }}
           className="w-full flex items-center justify-center gap-2 bg-zinc-900 text-white px-4 py-2.5 rounded-lg hover:bg-zinc-800 transition-colors"
         >
           <Plus size={18} />
@@ -49,7 +52,10 @@ export const Sidebar = ({
         {navItems.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
-            onClick={() => onFilterChange(id)}
+            onClick={() => {
+              onFilterChange(id);
+              onClose();
+            }}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg mb-1 transition-colors ${
               currentFilter === id
                 ? "bg-zinc-900 text-white"
