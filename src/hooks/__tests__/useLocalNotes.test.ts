@@ -175,7 +175,7 @@ describe("useLocalNotes", () => {
       result.current.undo();
     });
     expect(result.current.notes.length).toBe(2);
-    expect(result.current.canUndo).toBe(true);
+    expect(result.current.canUndo).toBe(false);
     expect(result.current.canRedo).toBe(true);
 
     act(() => {

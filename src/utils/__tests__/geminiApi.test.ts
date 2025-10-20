@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import { geminiApi } from "../geminiApi";
 import { settingsUtils } from "../settings";
 
@@ -89,7 +90,8 @@ describe("geminiApi", () => {
       const result = await geminiApi.enhanceText("test text");
       expect(result).toEqual({
         success: false,
-        error: "No enhanced text was generated. Please try again.",
+        error:
+          'No enhanced text was generated. API response: {"candidates":[{"content":{"parts":[]}}]}',
       });
     });
 

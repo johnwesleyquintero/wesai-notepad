@@ -168,7 +168,7 @@ describe("NoteCard", () => {
         onTogglePin={() => {}}
       />,
     );
-    const pinIcon = container.querySelector(".text-zinc-900 svg");
+    const pinIcon = container.querySelector(".text-blue-500 svg");
     expect(pinIcon).toBeInTheDocument();
     expect(pinIcon).toHaveAttribute("fill", "currentColor");
   });

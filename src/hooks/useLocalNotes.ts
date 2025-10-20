@@ -13,7 +13,7 @@ export const useLocalNotes = () => {
     redo,
     canUndo,
     canRedo,
-  } = useUndoRedo<Note[]>([]);
+  } = useUndoRedo<Note[]>(storageUtils.getNotes());
 
   const debouncedSaveNotes = useRef(
     debounce((updatedNotes: Note[]) => {
@@ -21,14 +21,18 @@ export const useLocalNotes = () => {
     }, DEBOUNCE_DELAY_SAVE_NOTES),
   ).current;
 
-  useEffect(() => {
-    const loadedNotes = storageUtils.getNotes();
-    setNotes(loadedNotes, { skipHistory: true }); // Load initial notes without adding to undo history
-  }, [setNotes]);
+  const isInitialRender = useRef(true);
 
   useEffect(() => {
-    debouncedSaveNotes(notes);
-  }, [notes, debouncedSaveNotes]);
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
+    if (notes) {
+      debouncedSaveNotes(notes);
+    }
+  }, [notes]);
 
   const saveNote = (title: string, content: string): Note => {
     const newNote: Note = {

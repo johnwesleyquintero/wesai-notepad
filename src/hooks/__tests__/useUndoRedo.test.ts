@@ -79,8 +79,12 @@ describe("useUndoRedo", () => {
 
     act(() => {
       result.current.setState(1);
+    });
+
+    act(() => {
       result.current.setState(2, { skipHistory: true }); // Should overwrite 1, not add new history
     });
+
     expect(result.current.state).toBe(2);
     expect(result.current.canUndo).toBe(false); // No undo since 1 was overwritten
     expect(result.current.canRedo).toBe(false);

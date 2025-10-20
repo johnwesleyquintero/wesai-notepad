@@ -53,6 +53,7 @@ export const NoteEditor = ({
         title: newTitle,
         content: newContent,
         tags: newTags,
+        isPinned: note.isPinned,
       });
       setIsSaving(false);
       onSaveStateChange(false);
@@ -70,7 +71,10 @@ export const NoteEditor = ({
   };
 
   const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTags = e.target.value.split(/[,\s]+/).filter(Boolean);
+    const newTags = e.target.value
+      .split(/[,\s]+/)
+      .map((tag) => tag.trim())
+      .filter(Boolean);
     setTags(newTags);
     handleUpdate(title, content, newTags);
   };

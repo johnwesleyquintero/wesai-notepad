@@ -1,14 +1,14 @@
-import "@testing-library/jest-dom";
+require("@testing-library/jest-dom");
 
 // Mock localStorage
 const localStorageMock = (() => {
-  let store: { [key: string]: string } = {};
+  let store = {};
   return {
-    getItem: (key: string) => store[key] || null,
-    setItem: (key: string, value: string) => {
+    getItem: (key) => store[key] || null,
+    setItem: (key, value) => {
       store[key] = value.toString();
     },
-    removeItem: (key: string) => {
+    removeItem: (key) => {
       delete store[key];
     },
     clear: () => {
@@ -18,6 +18,9 @@ const localStorageMock = (() => {
 })();
 
 Object.defineProperty(window, "localStorage", { value: localStorageMock });
+
+// Mock fetch API
+global.fetch = jest.fn();
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,

@@ -3,53 +3,56 @@ import { useState, useRef, useCallback } from "react";
 const MAX_HISTORY_SIZE = 50; // Limit the number of undo/redo states
 
 export const useUndoRedo = <T>(initialState: T) => {
+  const [state, setStateInternal] = useState<T>(initialState);
   const history = useRef([initialState]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const setState = useCallback(
-    (newState: T, { skipHistory = false } = {}) => {
-      if (skipHistory) {
-        history.current[currentIndex] = newState;
-        // If we skip history, we don't want to clear future states
-        // but we do want to update the current state in history
-      } else {
-        // If we are not at the end of the history, clear future states
-        if (currentIndex < history.current.length - 1) {
-          history.current = history.current.slice(0, currentIndex + 1);
-        }
+  const setState = useCallback((newState: T, { skipHistory = false } = {}) => {
+    setStateInternal(newState);
+    if (skipHistory) {
+      history.current = [newState];
+      setCurrentIndex(0);
+    } else {
+      setCurrentIndex((prevIndex) => {
+        const newHistory = history.current.slice(0, prevIndex + 1);
+        newHistory.push(newState);
 
-        // Add new state to history
-        history.current.push(newState);
-
-        // Enforce MAX_HISTORY_SIZE
-        if (history.current.length > MAX_HISTORY_SIZE) {
-          history.current = history.current.slice(
-            history.current.length - MAX_HISTORY_SIZE,
-          );
+        if (newHistory.length > MAX_HISTORY_SIZE) {
+          newHistory.splice(0, newHistory.length - MAX_HISTORY_SIZE);
         }
-        setCurrentIndex(history.current.length - 1);
-      }
-    },
-    [currentIndex],
-  );
+        history.current = newHistory;
+        return newHistory.length - 1;
+      });
+    }
+  }, []);
 
   const undo = useCallback(() => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-    }
-  }, [currentIndex]);
+    setCurrentIndex((prev) => {
+      const prevIndex = prev - 1;
+      if (prevIndex >= 0) {
+        setStateInternal(history.current[prevIndex]);
+        return prevIndex;
+      }
+      return prev;
+    });
+  }, []);
 
   const redo = useCallback(() => {
-    if (currentIndex < history.current.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-    }
-  }, [currentIndex]);
+    setCurrentIndex((prev) => {
+      const nextIndex = prev + 1;
+      if (nextIndex < history.current.length) {
+        setStateInternal(history.current[nextIndex]);
+        return nextIndex;
+      }
+      return prev;
+    });
+  }, []);
 
   const canUndo = currentIndex > 0;
   const canRedo = currentIndex < history.current.length - 1;
 
   return {
-    state: history.current[currentIndex],
+    state,
     setState,
     undo,
     redo,
