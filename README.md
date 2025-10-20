@@ -107,8 +107,8 @@ methods = ["getNotes", "saveNote", "updateNote", "deleteNote"];
 
 ## Phase 2 — Enhancements
 
-| Feature                  | Description                                  | Status       |
-| ------------------------ | -------------------------------------------- | ------------ |
+| Feature               | Description                                  | Status       |
+| --------------------- | -------------------------------------------- | ------------ |
 | Search Functionality  | Search notes by title and content            | ✅ Completed |
 | Dark Mode             | Toggle between light and dark themes         | ✅ Completed |
 | Categories/Tags       | Organize notes with custom categories        | ✅ Completed |

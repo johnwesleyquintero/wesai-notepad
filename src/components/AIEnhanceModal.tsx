@@ -70,7 +70,8 @@ export const AIEnhanceModal = ({
     }
   }, [isOpen]);
 
-  const currentTone = selectedTone === "custom" ? customToneInput : selectedTone;
+  const currentTone =
+    selectedTone === "custom" ? customToneInput : selectedTone;
 
   const handleEnhance = async () => {
     setIsLoading(true);
@@ -92,7 +93,6 @@ export const AIEnhanceModal = ({
       setIsLoading(false);
     }
   };
-
 
   const handleApply = () => {
     onApplyChanges(enhancedText);
